@@ -4,17 +4,142 @@ export const state = () => ({
   list: [],
   page: null,
   lastPage: null,
-  total: null
+  total: null,
+  disease: {
+    id: null,
+    description: null,
+    author: null,
+    indication: null,
+    example: null,
+    bibliography: null,
+    observation: null
+  },
+  treatmentsList: [],
+  treatment: {
+    treatmenttype: null,
+    drug_id: null,
+    description: null,
+    via_id: null,
+    use: null,
+    order: null,
+    duration: null,
+    observation: null
+  },
+  treatmentTypes: [
+    { id: 'PHARMA', description: 'Farmacológico' },
+    { id: 'OTHER', description: 'Outro' }
+  ]
 })
 
 export const mutations = {
   SET_DISEASES(state, diseases) {
     // eslint-disable-next-line
-    console.debug(diseases)
+    // console.log(diseases)
     state.list = diseases.data
     state.page = diseases.page
     state.lastPage = diseases.lastPage
     state.total = diseases.total
+  },
+  SET_TREATMENTS(state, treatments) {
+    // eslint-disable-next-line
+    // console.log(diseases)
+    state.treatmentsList = treatments
+  },
+  SET_TREATMENT(state, treatment) {
+    // eslint-disable-next-line
+    // console.log(diseases)
+    state.treatment = treatment
+  },
+  SET_DISEASE_NULL(state) {
+    state.disease = {
+      id: null,
+      description: null,
+      author: null,
+      indication: null,
+      example: null,
+      bibliography: null,
+      observation: null
+    }
+  },
+  SET_TREATMENT_NULL(state) {
+    state.treatment = {
+      id: null,
+      treatmenttype: null,
+      drug_id: null,
+      description: null,
+      via_id: null,
+      use: null,
+      order: null,
+      duration: null,
+      observation: null
+    }
+  },
+  SET_DISEASE(state, disease) {
+    // eslint-disable-next-line
+    // console.log(disease)
+    state.disease = disease
+  },
+  UPDATE_DISEASE(state, disease) {
+    // eslint-disable-next-line
+    // console.log(disease)
+    for (let index = 0; index < state.list.length; index++) {
+      if (state.list[index].id === disease.id) {
+        state.list[index] = disease
+      }
+    }
+  },
+  ADD_DISEASE(state, disease) {
+    // eslint-disable-next-line
+    // console.log(disease)
+    state.list.push(disease)
+  },
+  ADD_TREATMENT(state, treatment) {
+    // eslint-disable-next-line
+    // console.log(disease)
+    state.treatmentsList.push(treatment)
+  },
+  updatedescription(state, value) {
+    state.disease.description = value
+  },
+  updateauthor(state, value) {
+    state.disease.author = value
+  },
+  updateindication(state, value) {
+    state.disease.indication = value
+  },
+  updatefollowup(state, value) {
+    state.disease.followup = value
+  },
+  updateexample(state, value) {
+    state.disease.example = value
+  },
+  updatebibliography(state, value) {
+    state.disease.bibliography = value
+  },
+  updateobservation(state, value) {
+    state.disease.observation = value
+  },
+
+  updatetreatmenttreatmenttype(state, value) {
+    state.treatment.treatmenttype = value
+  },
+  updatetreatmentdrug_id(state, value) {
+    state.treatment.drug_id = value
+  },
+  updatetreatmentdescription(state, value) {
+    state.treatment.description = value
+  },
+  updatetreatmentvia_id(state, value) {
+    state.treatment.via_id = value
+  },
+  updatetreatmentuse(state, value) {
+    state.treatment.use = value
+  },
+  updatetreatmentduration(state, value) {
+    state.treatment.duration = value
+  },
+  updatetreatmentobservation(state, value) {
+    state.treatment.observation = value
   }
 }
 
@@ -22,7 +147,51 @@ export const actions = {
   async GET_DISEASES({ commit }) {
     const response = await this.$axios.get('/diseases')
     // eslint-disable-next-line
-    console.debug(response.data)
+    // console.log(response.data)
     commit('SET_DISEASES', response.data.diseases)
+  },
+  async GET_DISEASE({ commit }, id) {
+    const response = await this.$axios.get('/diseases/' + id)
+    // eslint-disable-next-line
+    // console.debug(response.data)
+    const responsetreatments = await this.$axios.get(
+      '/diseases/' + id + '/treatments'
+    )
+    commit('SET_DISEASE', response.data.disease)
+    commit('SET_TREATMENTS', responsetreatments.data.treatments)
+  },
+  async SET_PAGE({ commit }, newPage) {
+    // eslint-disable-next-line
+    // console.log('get page ' + newPage)
+    const response = await this.$axios.get('/diseases?page=' + newPage)
+    commit('SET_DISEASES', response.data.diseases)
+  },
+  async SAVE({ commit }, newDisease) {
+    // eslint-disable-next-line
+    if (newDisease.id == null) {
+      const response = await this.$axios.post('/diseases', newDisease)
+      commit('ADD_DISEASE', response.data.disease)
+    } else {
+      await this.$axios.put('/diseases/' + newDisease.id, newDisease)
+      commit('UPDATE_DISEASE', newDisease)
+    }
+  },
+  SET_DISEASE_NULL({ commit }) {
+    // eslint-disable-next-line
+    commit('SET_DISEASE_NULL')
+    commit('SET_TREATMENTS', null)
+  },
+  ADD_TREATMENT({ commit }, treatment) {
+    // eslint-disable-next-line
+    // console.log(disease)
+    commit('ADD_TREATMENT', treatment)
+  },
+  SET_TREATMENT_NULL({ commit }) {
+    // eslint-disable-next-line
+    commit('SET_TREATMENT_NULL')
+  },
+  SET_TREATMENT({ commit }, treatment) {
+    // eslint-disable-next-line
+    commit('SET_TREATMENT',treatment)
   }
 }

@@ -1,7 +1,9 @@
 <template>
   <div>
     <navbar/>
-    <nuxt/>
+    <div class="spa">
+      <nuxt/>
+    </div>
   </div>
 </template>
 
@@ -26,6 +28,13 @@ html {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
+}
+.btn {
+  margin-top: 5px
+}
+
+.spa {
+  padding: 3%
 }
 
 *,

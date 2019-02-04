@@ -3,10 +3,10 @@
     <div>
       <logo />
       <h1 class="title">
-        easyPed Configuration
+        easyPed BO
       </h1>
       <h2 class="subtitle">
-        The amazing easyPed config page
+        The amazing easyPed backoffice page
       </h2>
       <div class="links">
         <a
