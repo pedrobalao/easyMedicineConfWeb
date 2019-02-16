@@ -9,6 +9,7 @@
 
 <script>
 export default {
+  event: 'onsubmitted',
   fetch({ store, params }) {
     // eslint-disable-next-line
     store.dispatch('vias/SET_VIA_NULL')
@@ -38,6 +39,7 @@ export default {
     async onSubmit() {
       try {
         await this.$store.dispatch('vias/SAVE', this.$store.state.vias.via)
+        this.$emit('onsubmitted')
       } catch (error) {
         // eslint-disable-next-line
         console.log(error)

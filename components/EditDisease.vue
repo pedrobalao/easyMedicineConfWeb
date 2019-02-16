@@ -57,18 +57,22 @@
           :max-rows="maxrows"
         ></b-form-textarea>
       </b-form-group>
-      <b-form-group id="observationGroup" label="Observation:" label-for="observationInput">
+      <b-form-group id="observationGroup" label="Observações:" label-for="observationInput">
         <b-form-textarea
           id="observationInput"
           type="text"
           v-model="observation"
-          placeholder="Observation"
+          placeholder="Observações"
           :rows="rows"
           :max-rows="maxrows"
         ></b-form-textarea>
       </b-form-group>
       <h2>Tratamentos</h2>
-      <treatmentsList/>
+
+      <no-ssr placeholder="Loading...">
+        <!-- this component will only be rendered on client-side -->
+        <treatmentsList/>
+      </no-ssr>
       <b-button @click="onSubmit" variant="primary">Guardar</b-button>
     </b-form>
   </div>
@@ -84,7 +88,7 @@ export default {
   },
   async fetch({ store, params }) {
     // eslint-disable-next-line
-    console.log('bef fetch ')
+    console.log('bef fetch '+params.id)
     await store.dispatch('diseases/GET_DISEASE', params.id)
     // eslint-disable-next-line
     console.log('after fetch ')
@@ -158,7 +162,9 @@ export default {
   },
   methods: {
     async onSubmit() {
-      await this.$store.dispatch('diseases/SAVE', this.disease)
+      let disease = this.disease
+      disease.treatments = this.$store.state.diseases.treatmentsList
+      await this.$store.dispatch('diseases/SAVE', disease)
     }
   }
 }

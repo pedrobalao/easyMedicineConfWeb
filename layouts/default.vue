@@ -30,7 +30,8 @@ html {
   box-sizing: border-box;
 }
 .btn {
-  margin-top: 5px
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .spa {

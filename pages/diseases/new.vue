@@ -12,6 +12,7 @@ export default {
     // eslint-disable-next-line
     store.dispatch('diseases/SET_DISEASE_NULL'),
     await store.dispatch('vias/GET_VIAS')
+    await store.dispatch('drugs/CLEAR_SEARCH_RESULT')
   }
 }
 </script>

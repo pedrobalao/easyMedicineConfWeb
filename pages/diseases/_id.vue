@@ -13,6 +13,8 @@ export default {
     console.log('bef fetch ')
     await store.dispatch('diseases/GET_DISEASE', params.id)
     await store.dispatch('vias/GET_VIAS')
+    await store.dispatch('drugs/CLEAR_SEARCH_RESULT')
+    
     // eslint-disable-next-line
     console.log('after fetch ')
   }

@@ -12,7 +12,8 @@ export const state = () => ({
     indication: null,
     example: null,
     bibliography: null,
-    observation: null
+    observation: null,
+    followup: null
   },
   treatmentsList: [],
   treatment: {
@@ -28,7 +29,9 @@ export const state = () => ({
   treatmentTypes: [
     { id: 'PHARMA', description: 'Farmacológico' },
     { id: 'OTHER', description: 'Outro' }
-  ]
+  ],
+  treatmentIndex: null,
+  drug: null
 })
 
 export const mutations = {
@@ -43,12 +46,15 @@ export const mutations = {
   SET_TREATMENTS(state, treatments) {
     // eslint-disable-next-line
     // console.log(diseases)
-    state.treatmentsList = treatments
+    if (treatments === null) {
+      state.treatmentsList = []
+    } else state.treatmentsList = treatments
   },
-  SET_TREATMENT(state, treatment) {
+  SET_TREATMENT(state, index) {
     // eslint-disable-next-line
-    // console.log(diseases)
-    state.treatment = treatment
+    console.log('SET_TREATMENT ' + index)
+    state.treatment = state.treatmentsList[index]
+    state.treatmentIndex = index
   },
   SET_DISEASE_NULL(state) {
     state.disease = {
@@ -58,7 +64,8 @@ export const mutations = {
       indication: null,
       example: null,
       bibliography: null,
-      observation: null
+      observation: null,
+      followup: null
     }
   },
   SET_TREATMENT_NULL(state) {
@@ -73,6 +80,8 @@ export const mutations = {
       duration: null,
       observation: null
     }
+    state.treatmentIndex = null
+    state.drug = null
   },
   SET_DISEASE(state, disease) {
     // eslint-disable-next-line
@@ -96,7 +105,16 @@ export const mutations = {
   ADD_TREATMENT(state, treatment) {
     // eslint-disable-next-line
     // console.log(disease)
-    state.treatmentsList.push(treatment)
+    if (state.treatmentIndex != null) {
+      state.treatmentsList[state.treatmentIndex] = treatment
+    } else {
+      state.treatmentsList.push(treatment)
+    }
+  },
+  DELETE_TREATMENT(state, index) {
+    // eslint-disable-next-line
+    // console.log(disease)
+    state.treatmentsList.splice(index, 1)
   },
   updatedescription(state, value) {
     state.disease.description = value
@@ -140,6 +158,17 @@ export const mutations = {
   },
   updatetreatmentobservation(state, value) {
     state.treatment.observation = value
+  },
+
+  SET_DRUG(state, drug) {
+    // eslint-disable-next-line
+    // console.log(diseases)
+    state.drug = drug
+    if (drug != null) {
+      state.treatment.drug_id = drug.Id
+    } else {
+      state.treatment.drug_id = null
+    }
   }
 }
 
@@ -190,8 +219,27 @@ export const actions = {
     // eslint-disable-next-line
     commit('SET_TREATMENT_NULL')
   },
-  SET_TREATMENT({ commit }, treatment) {
+  SET_TREATMENT({ commit }, index) {
     // eslint-disable-next-line
-    commit('SET_TREATMENT',treatment)
+    console.log('ACTION treatment index - ' + index)
+    commit('SET_TREATMENT', index)
+  },
+  async SET_DRUG_ID({ commit }, drugid) {
+    if (drugid != null) {
+      const response = await this.$axios.get('/drugs/' + drugid)
+      commit('SET_DRUG', response.data.drug)
+    } else {
+      commit('SET_DRUG', null)
+    }
+  },
+
+  DELETE_TREATMENT({ commit }, index) {
+    // eslint-disable-next-line
+    commit('DELETE_TREATMENT', index)
+  },
+  SET_DRUG({ commit }, drug) {
+    // eslint-disable-next-line
+    // console.log(diseases)
+    commit('SET_DRUG', drug)
   }
 }

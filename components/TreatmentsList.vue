@@ -1,11 +1,10 @@
 <template>
   <div>
-    <b-button @click="showModal('NEW',null)">Novo Tratamento</b-button>
+    <b-button variant="success" @click="showModal('NEW',null)">Novo Tratamento</b-button>
     <b-modal ref="myModalRef" size="lg" hide-footer :title="modalTitle">
       <div>
         <treatment @onsubmitted='treatmentSubmitted'/>
       </div>
-      <b-btn class="mt-3" variant="danger" block @click="hideModal">Cancelar</b-btn>
     </b-modal>
 
     <b-list-group>
@@ -16,7 +15,7 @@
           @click.stop="showModal('EDIT',index)"
           variant="secondary"
         >Edit</b-button>
-        <b-button size="sm" @click.stop variant="danger">Apagar</b-button>
+        <b-button size="sm" @click.stop="removeTreatment(index)" variant="danger">Apagar</b-button>
           </div>
       </b-list-group-item>
     </b-list-group>
@@ -67,14 +66,18 @@ export default {
     }
   },
   methods: {
-    showModal(action, index) {
+    async showModal(action, index) {
       if (action === 'NEW') {
         this.modalTitle = 'Novo tratamento'
         this.$store.dispatch('diseases/SET_TREATMENT_NULL')
+        await this.$store.dispatch('diseases/SET_DRUG_ID',null)
       }
       else {
           this.modalTitle = 'Editar tratamento'
-          this.$store.dispatch('diseases/SET_TREATMENT', this.treatmentsList[index])
+          // eslint-disable-next-line
+          console.log('Editar treatment index - '+index)
+          this.$store.dispatch('diseases/SET_TREATMENT',index)
+          await this.$store.dispatch('diseases/SET_DRUG_ID',this.$store.state.diseases.treatmentsList[index].drug_id)
       }
       
       this.$refs.myModalRef.show()
@@ -85,8 +88,8 @@ export default {
     treatmentSubmitted() {
       this.hideModal()
     },
-    edit (treatment) {
-        this.$store.dispatch('diseases/SET_TREATMENT',treatment)
+    removeTreatment(index){
+        this.$store.dispatch('diseases/DELETE_TREATMENT',index)
     }
   }
 }

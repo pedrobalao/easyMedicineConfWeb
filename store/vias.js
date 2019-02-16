@@ -35,7 +35,7 @@ export const actions = {
   async GET_VIAS({ commit }) {
     const response = await this.$axios.get('/vias')
     // eslint-disable-next-line
-    console.log(response.data)
+    // console.log(response.data)
     commit('SET_VIAS', response.data.vias)
   },
   async GET_DISEASE({ commit }, id) {
@@ -46,7 +46,7 @@ export const actions = {
   },
   async SAVE({ commit }, newVia) {
     // eslint-disable-next-line
-    // console.log(newVia)
+    console.log('SAVE VIA')
     const response = await this.$axios.post('/vias', newVia)
     commit('ADD_VIA', response.data.via)
   },

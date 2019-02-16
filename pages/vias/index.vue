@@ -1,19 +1,38 @@
 <template>
   <div>
     <h1>Vias</h1>
+    <div >
+        <b-button variant="success" @click="showModal('NEW',null)" class="d-flex justify-content-between align-items-center">Nova Via</b-button>
+    </div>
+    
+    <b-modal ref="myModalRef" size="lg" hide-footer title="Nova Via">
+      <div>
+        <newVia @onsubmitted="hideModal"/>
+      </div>
+    </b-modal>
+    <b-list-group>
+      <b-list-group-item
+        v-for="element in vias"
+        :key="element.Id"
+        class="d-flex justify-content-between align-items-center"
+      >
+        {{element.Id}}
+        <!--<div>
+        <b-button size="sm" @click.stop="removeVia(index)" variant="danger">Apagar</b-button>
+        </div>-->
+      </b-list-group-item>
+    </b-list-group>
 
-    <newVia />
     <!-- Main table element -->
-    <b-table show-empty stacked="md" :items="vias" :fields="fields">
+    <!--<b-table show-empty stacked="md" :items="vias" :fields="fields">
       <template slot="name" slot-scope="row">{{row.value.description}}</template>
       <template slot="actions" slot-scope="row">
-        <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
         <b-button
           size="sm"
           @click.stop="delete(row.item, row.index, $event.target)"
           variant="danger">Apagar</b-button>
       </template>
-    </b-table>
+    </b-table>-->
   </div>
 </template>
 
@@ -40,7 +59,14 @@ export default {
     })
   },
   methods: {
-    delete(item, index, event) {}
+    delete(item, index, event) {},
+    showModal(action, index) {
+      this.$store.dispatch('vias/SET_VIA_NULL')
+      this.$refs.myModalRef.show()
+    },
+    hideModal() {
+      this.$refs.myModalRef.hide()
+    }
   }
 }
 </script>

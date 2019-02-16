@@ -23,7 +23,8 @@
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "nuxt": "^2.3.4",
-    "vuedraggable": "^2.17.0"
+    "v-autocomplete": "^1.8.2",
+    "vue-cool-select": "^2.0.1"
   },
   "devDependencies": {
     "nodemon": "^1.18.9",
