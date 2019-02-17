@@ -86,6 +86,7 @@ export default {
   components: {
     treatmentsList
   },
+  event: 'onsubmitted',
   async fetch({ store, params }) {
     // eslint-disable-next-line
     console.log('bef fetch '+params.id)
@@ -165,6 +166,7 @@ export default {
       let disease = this.disease
       disease.treatments = this.$store.state.diseases.treatmentsList
       await this.$store.dispatch('diseases/SAVE', disease)
+      this.$emit('onsubmitted')
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <editDisease/>
+  <editDisease  @onsubmitted="close"/>
 </template>
 <script>
 import editDisease from '~/components/EditDisease.vue'
@@ -17,6 +17,11 @@ export default {
     
     // eslint-disable-next-line
     console.log('after fetch ')
+  },
+  methods: {
+    close () {
+      this.$router.push({ path: `/diseases` }) 
+    }
   }
 }
 </script>

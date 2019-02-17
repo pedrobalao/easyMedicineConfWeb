@@ -1,5 +1,5 @@
 <template>
-  <editDisease/>
+  <editDisease @onsubmitted="close"/>
 </template>
 <script>
 import editDisease from '~/components/EditDisease.vue'
@@ -13,6 +13,11 @@ export default {
     store.dispatch('diseases/SET_DISEASE_NULL'),
     await store.dispatch('vias/GET_VIAS')
     await store.dispatch('drugs/CLEAR_SEARCH_RESULT')
+  },
+  methods: {
+    close () {
+      this.$router.push({ path: `/diseases` }) 
+    }
   }
 }
 </script>
