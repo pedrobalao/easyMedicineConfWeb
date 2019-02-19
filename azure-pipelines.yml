@@ -17,12 +17,10 @@ steps:
 - task: NodeTool@0
   inputs:
     versionSpec: '8.x'
-- script: 
-    echo $(DB_HOST)
 - script: |
     echo 'HOST=0.0.0.0' > .env
-    echo 'PORT=3000' > .env
-    echo 'API_URL=$(API_URL) >> .env
+    echo 'PORT=3000' >> .env
+    echo 'API_URL=$(API_URL)' >> .env
 - script: |
     npm install
     docker build -f Dockerfile -t $(dockerId)/$(imageName) .
