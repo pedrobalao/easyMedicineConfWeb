@@ -3,7 +3,7 @@
     <h2 class="text-center">Login</h2>
     <hr>
     <b-alert v-if="error" show variant="danger">{{ error + '' }}</b-alert>
-    <b-alert show v-if="$auth.$state.redirect">
+    <b-alert show v-show="$auth.$state.redirect">
       You have to login before accessing to
       <strong>{{ $auth.$state.redirect }}</strong>
     </b-alert>
@@ -73,7 +73,7 @@ export default {
             password: this.password
           }
         })
-        .then(() => (this.error = this.$auth.user))
+        // .then(() => (this.error = this.$auth.user))
         .catch(e => {
           this.error = e + ''
         })
