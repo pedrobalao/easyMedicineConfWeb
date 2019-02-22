@@ -26,6 +26,19 @@
           :max-rows="maxrows"
         ></b-form-textarea>
       </b-form-group>
+      <b-form-group id="InputDescrTreatGroup" label="Descrição do Tratamento:" label-for="InputDescrTreat">
+        <b-form-textarea
+          id="InputDescrTreat"
+          type="text"
+          v-model="treatment_description"
+          required
+          placeholder="Descrição do tratamento"
+          :rows="rows"
+          :max-rows="maxrows"
+        ></b-form-textarea>
+      </b-form-group>
+
+      
       <b-form-group id="followupGroup" label="Followup:" label-for="followupInput">
         <b-form-textarea
           id="followupInput"
@@ -67,13 +80,13 @@
           :max-rows="maxrows"
         ></b-form-textarea>
       </b-form-group>
-      <h2>Tratamentos</h2>
+      <h2>Fármacos</h2>
 
       <no-ssr placeholder="Loading...">
         <!-- this component will only be rendered on client-side -->
         <treatmentsList/>
       </no-ssr>
-      <b-button @click="onSubmit" variant="primary">Guardar</b-button>
+      <b-button @click="onSubmit" variant="primary">Gravar</b-button>
     </b-form>
   </div>
 </template>
@@ -126,6 +139,15 @@ export default {
       },
       set(value) {
         this.$store.commit('diseases/updateindication', value)
+      }
+    },
+
+    treatment_description: {
+      get() {
+        return this.$store.state.diseases.disease.treatment_description
+      },
+      set(value) {
+        this.$store.commit('diseases/updatetreatment_description', value)
       }
     },
     followup: {

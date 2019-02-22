@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button variant="success" @click="showModal('NEW',null)">Novo Tratamento</b-button>
+    <b-button variant="success" @click="showModal('NEW',null)">Novo Fármaco</b-button>
     <b-modal ref="myModalRef" size="lg" hide-footer :title="modalTitle">
       <div>
         <treatment @onsubmitted='treatmentSubmitted'/>
@@ -14,7 +14,7 @@
           size="sm"
           @click.stop="showModal('EDIT',index)"
           variant="secondary"
-        >Edit</b-button>
+        >Editar</b-button>
         <b-button size="sm" @click.stop="removeTreatment(index)" variant="danger">Apagar</b-button>
           </div>
       </b-list-group-item>
@@ -49,7 +49,7 @@ export default {
         { key: 'description', label: 'Descrição', sortable: false },
         { key: 'actions', label: 'Ações' }
       ],
-      modalTitle: 'Novo tratamento'
+      modalTitle: 'Novo Fármaco'
     }
   },
   computed: {
@@ -68,12 +68,12 @@ export default {
   methods: {
     async showModal(action, index) {
       if (action === 'NEW') {
-        this.modalTitle = 'Novo tratamento'
+        this.modalTitle = 'Novo Fármaco'
         this.$store.dispatch('diseases/SET_TREATMENT_NULL')
         await this.$store.dispatch('diseases/SET_DRUG_ID',null)
       }
       else {
-          this.modalTitle = 'Editar tratamento'
+          this.modalTitle = 'Editar Fármaco'
           // eslint-disable-next-line
           console.log('Editar treatment index - '+index)
           this.$store.dispatch('diseases/SET_TREATMENT',index)

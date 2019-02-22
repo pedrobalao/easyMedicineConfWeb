@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-form>
-      <b-form-group id="tipoTratamentoGroup1" label="Tipo Tratamento" label-for="tipotratinput">
+      <!--<b-form-group id="tipoTratamentoGroup1" label="Tipo Tratamento" label-for="tipotratinput">
         <b-form-select v-model="treatmenttype" class="mb-3" id="tipotratinput">
           <option
             v-for="treat in treatmentTypes"
@@ -9,7 +9,7 @@
             :value="treat.id"
           >{{treat.description}}</option>
         </b-form-select>
-      </b-form-group>
+      </b-form-group>-->
 
       <b-form-group id="drugsGroup1" label="Medicamento" label-for="medicamentoInput">
         <v-autocomplete
@@ -72,14 +72,14 @@ export default {
       treatment: state => state.diseases.treatment,
       searchResult: state => state.drugs.searchResult
     }),
-    treatmenttype: {
-      get() {
-        return this.$store.state.diseases.treatment.treatmenttype
-      },
-      set(value) {
-        this.$store.commit('diseases/updatetreatmenttreatmenttype', value)
-      }
-    },
+    // treatmenttype: {
+    //   get() {
+    //     return this.$store.state.diseases.treatment.treatmenttype
+    //   },
+    //   set(value) {
+    //     this.$store.commit('diseases/updatetreatmenttreatmenttype', value)
+    //   }
+    // },
     drug: {
       get() {
         return this.$store.state.diseases.drug

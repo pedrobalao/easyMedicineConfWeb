@@ -13,11 +13,12 @@ export const state = () => ({
     example: null,
     bibliography: null,
     observation: null,
-    followup: null
+    followup: null,
+    treatment_description: null
   },
   treatmentsList: [],
   treatment: {
-    treatmenttype: null,
+    treatmenttype: 'PHARMA',
     drug_id: null,
     description: null,
     via_id: null,
@@ -65,13 +66,14 @@ export const mutations = {
       example: null,
       bibliography: null,
       observation: null,
-      followup: null
+      followup: null,
+      treatment_description: null
     }
   },
   SET_TREATMENT_NULL(state) {
     state.treatment = {
       id: null,
-      treatmenttype: null,
+      treatmenttype: 'PHARMA',
       drug_id: null,
       description: null,
       via_id: null,
@@ -124,6 +126,9 @@ export const mutations = {
   },
   updateindication(state, value) {
     state.disease.indication = value
+  },
+  updatetreatment_description(state, value) {
+    state.disease.treatment_description = value
   },
   updatefollowup(state, value) {
     state.disease.followup = value
