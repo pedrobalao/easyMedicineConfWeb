@@ -29,7 +29,7 @@
       </b-form-group>
 
       <b-form-group id="descrg" label="Descrição" label-for="descr">
-        <b-form-input id="descr" type="text" v-model="description" required placeholder="Descrição"></b-form-input>
+        <b-form-input id="descr" type="text" v-model="description" required placeholder="Descrição" readonly></b-form-input>
       </b-form-group>
 
       <b-form-group id="posologiag" label="Posologia" label-for="posologia">
@@ -88,6 +88,13 @@ export default {
         // eslint-disable-next-line
         console.log('drugid - ' + value)
         this.$store.commit('diseases/SET_DRUG', value)
+        if(value != null){
+          this.description = value.Name
+        }
+        else
+        {
+          this.description = 'Selecione um medicamento válido'
+        }
       }
     },
     description: {

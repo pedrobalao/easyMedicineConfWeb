@@ -26,8 +26,25 @@
           :max-rows="maxrows"
         ></b-form-textarea>
       </b-form-group>
-      <b-form-group id="InputDescrTreatGroup" label="Descrição do Tratamento:" label-for="InputDescrTreat">
-        <b-form-textarea
+
+      <b-form-group
+        id="InputDescrTreatGroup"
+        label="Descrição do Tratamento:"
+        label-for="InputDescrTreat"
+      >
+        <section class="container">
+          <div
+            class="quill-editor"
+            :content="treatment_description"
+            @blur="onEditorBlur($event)"
+            @focus="onEditorFocus($event)"
+            @ready="onEditorReady($event)"
+            @change="onEditorChange($event)"
+            v-quill:myQuillEditor="editorOption"
+          ></div>
+        </section>
+
+        <!--<b-form-textarea
           id="InputDescrTreat"
           type="text"
           v-model="treatment_description"
@@ -35,10 +52,9 @@
           placeholder="Descrição do tratamento"
           :rows="rows"
           :max-rows="maxrows"
-        ></b-form-textarea>
+        ></b-form-textarea>-->
       </b-form-group>
 
-      
       <b-form-group id="followupGroup" label="Followup:" label-for="followupInput">
         <b-form-textarea
           id="followupInput"
@@ -102,7 +118,7 @@ export default {
   event: 'onsubmitted',
   async fetch({ store, params }) {
     // eslint-disable-next-line
-    console.log('bef fetch '+params.id)
+    console.log('bef fetch ' + params.id)
     await store.dispatch('diseases/GET_DISEASE', params.id)
     // eslint-disable-next-line
     console.log('after fetch ')
@@ -110,7 +126,16 @@ export default {
   data() {
     return {
       rows: 3,
-      maxrows: 6
+      maxrows: 6,
+      editorOption: {
+        // some quill options
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            ['blockquote', 'code-block']
+          ]
+        }
+      }
     }
   },
   computed: {
@@ -189,7 +214,27 @@ export default {
       disease.treatments = this.$store.state.diseases.treatmentsList
       await this.$store.dispatch('diseases/SAVE', disease)
       this.$emit('onsubmitted')
+    },
+    onEditorBlur(editor) {},
+    onEditorFocus(editor) {},
+    onEditorReady(editor) {},
+    onEditorChange({ editor, html, text }) {
+      // eslint-disable-next-line
+      console.log('editor change!', editor, html, text)
+      this.treatment_description = html
     }
   }
 }
 </script>
+
+<style lang="css">
+.container {
+  width: 100%;
+}
+.container .quill-editor {
+  width: 100%;
+  min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+</style>

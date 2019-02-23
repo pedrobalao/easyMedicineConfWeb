@@ -24,7 +24,8 @@
     "express": "^4.16.4",
     "nuxt": "^2.3.4",
     "v-autocomplete": "^1.8.2",
-    "vue-cool-select": "^2.0.1"
+    "vue-cool-select": "^2.0.1",
+    "vue-quill-editor": "^3.0.6"
   },
   "devDependencies": {
     "nodemon": "^1.18.9",
