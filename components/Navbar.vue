@@ -10,6 +10,9 @@
         <b-navbar-nav v-if="$auth.$state.user">
           <b-nav-item to="/vias">Vias</b-nav-item>
         </b-navbar-nav>
+        <b-navbar-nav v-if="$auth.$state.user">
+          <b-nav-item to="/unities">Unidades</b-nav-item>
+        </b-navbar-nav>
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
@@ -26,7 +29,7 @@
               <em>{{$auth.$state.user.username}}</em>
             </template>
             <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item @click="logout">Signout</b-dropdown-item>
+            <b-dropdown-item @click="logout">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
