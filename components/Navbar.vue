@@ -13,6 +13,12 @@
         <b-navbar-nav v-if="$auth.$state.user">
           <b-nav-item to="/unities">Unidades</b-nav-item>
         </b-navbar-nav>
+        <b-navbar-nav v-if="$auth.$state.user">
+          <b-nav-item to="/variables">Variáveis</b-nav-item>
+        </b-navbar-nav>
+         <b-navbar-nav v-if="$auth.$state.user">
+          <b-nav-item to="/medicalcalculations">Cálculos Médicos</b-nav-item>
+        </b-navbar-nav>
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
