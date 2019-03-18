@@ -59,6 +59,25 @@ export const mutations = {
   },
   updatedescription(state, value) {
     state.category.Description = value
+  },
+  updatesubcatdescription(state, value) {
+    state.subcategory.Description = value
+  },
+  SET_SUBCATEGORY(state, subcategory) {
+    // eslint-disable-next-line
+    // console.log(diseases)
+    state.subcategory = subcategory
+  },
+  SET_SUBCATEGORY_NULL(state) {
+    state.subcategory = {
+      Id: null,
+      Description: null,
+      CategoryId: null,
+      drugs: []
+    }
+  },
+  SET_DRUGS(state, drugs) {
+    state.subcategory.drugs = drugs
   }
 }
 
@@ -93,7 +112,23 @@ export const actions = {
     )
     commit('SET_SUBCATEGORIES', result.data.subcategories)
   },
+  async SET_SUBCATEGORY({ commit }, { categoryid, subcategoryid }) {
+    // eslint-disable-next-line
+    console.log('catid - ' + categoryid)
+    const result = await this.$axios.get(
+      '/categories/' + categoryid + '/subcategories/' + subcategoryid
+    )
+    commit('SET_SUBCATEGORY', result.data.subcategory)
+
+    const resdrugs = await this.$axios.get(
+      '/categories/' + categoryid + '/subcategories/' + subcategoryid + '/drugs'
+    )
+    commit('SET_DRUGS', resdrugs.data.drugs)
+  },
   SET_CATEGORY_NULL({ commit }) {
     commit('SET_CATEGORY_NULL')
+  },
+  SET_SUBCATEGORY_NULL({ commit }) {
+    commit('SET_SUBCATEGORY_NULL')
   }
 }

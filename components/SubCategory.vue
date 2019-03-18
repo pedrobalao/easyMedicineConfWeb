@@ -11,21 +11,20 @@
             required
             placeholder="Descrição"
           ></b-form-input>
-          <b-button variant="success" :disabled="description===''" @click="savecategory()">{{editmode ? "Renomear":"Criar"}}</b-button>
+          <b-button variant="success" :disabled="description===''" @click="savesubcategory()">{{editmode ? "Renomear":"Criar"}}</b-button>
         </div>
       </b-form-group>
     </b-form>
 
     <div v-if="editmode">
-      <h2>Sub-Categorias</h2>
-      <b-button variant="success" @click="savecategory()">Adicionar Sub-Categoria</b-button>
+      <h2>Drugs</h2>
       <b-list-group>
         <b-list-group-item
-          v-for="(element, index) in subcategories"
+          v-for="(element, index) in drugs"
           :key="element.Id"
           class="d-flex justify-content-between align-items-center"
         >
-          <div>{{element.Description}}</div>
+          <div>{{element.Name}}</div>
 
           <div>
             <b-button size="sm" @click.stop="edit(element)" variant="secondary">Editar</b-button>
@@ -56,39 +55,28 @@ export default {
   },
   computed: {
     ...mapState({
-      subcategories: state => state.categories.category.SubCategories
+      drugs: state => state.categories.subcategory.drugs
     }),
     description: {
       get() {
-        return this.$store.state.categories.category.Description
+        return this.$store.state.categories.subcategory.Description
       },
       set(value) {
-        this.$store.commit('categories/updatedescription', value)
-      }
-    },
-    id: {
-      get() {
-        // eslint-disable-next-line
-        console.log('CCATID- ' + this.$store.state.categories.category.id)
-        return this.$store.state.categories.category.id
+        this.$store.commit('categories/updatesubcatdescription', value)
       }
     }
   },
   methods: {
-    async savecategory() {
+    async savesubcategory() {
       await this.$store.dispatch(
-        'categories/SAVE_CATEGORY',
+        'categories/SAVE_SUBCATEGORY',
         this.$store.state.categories.category
       )
       if(!this.editmode)
       {
           this.$router.push({path:'/categories/'+this.$store.state.categories.category.id})
       }
-    },
-    edit(subcategory) {
-      this.$router.push({path:'/categories/'+this.$store.state.categories.category.id+'/subcategories/'+subcategory.Id})
     }
-
   }
 }
 </script>
