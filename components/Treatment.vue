@@ -72,14 +72,6 @@ export default {
       treatment: state => state.diseases.treatment,
       searchResult: state => state.drugs.searchResult
     }),
-    // treatmenttype: {
-    //   get() {
-    //     return this.$store.state.diseases.treatment.treatmenttype
-    //   },
-    //   set(value) {
-    //     this.$store.commit('diseases/updatetreatmenttreatmenttype', value)
-    //   }
-    // },
     drug: {
       get() {
         return this.$store.state.diseases.drug

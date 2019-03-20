@@ -78,6 +78,17 @@ export const mutations = {
   },
   SET_DRUGS(state, drugs) {
     state.subcategory.drugs = drugs
+  },
+  ADD_DRUG_TO_SUBCATEGORY(state, drug) {
+    state.subcategory.drugs.push(drug)
+  },
+  REMOVE_DRUG_FROM_SUBCATEGORY(state, drug) {
+    for (let index = 0; index < state.subcategory.drugs.length; index++) {
+      if (state.subcategory.drugs[index].id === drug.id) {
+        state.subcategory.drugs.splice(index, 1)
+        return
+      }
+    }
   }
 }
 
@@ -125,10 +136,59 @@ export const actions = {
     )
     commit('SET_DRUGS', resdrugs.data.drugs)
   },
+  async SAVE_SUBCATEGORY({ commit }, subcategory) {
+    // eslint-disable-next-line
+    console.log('SAVE_SUBCATEGORY')
+    if (subcategory.Id != null) {
+      await this.$axios.put(
+        '/categories/' +
+          subcategory.CategoryId +
+          '/subcategories/' +
+          subcategory.Id,
+        subcategory
+      )
+    } else {
+      const result = await this.$axios.post(
+        '/categories/' + subcategory.CategoryId + '/subcategories/',
+        subcategory
+      )
+      // eslint-disable-next-line
+      // console.log(response.data)
+      commit('SET_SUBCATEGORY', result.data.subcategory)
+    }
+  },
   SET_CATEGORY_NULL({ commit }) {
     commit('SET_CATEGORY_NULL')
   },
   SET_SUBCATEGORY_NULL({ commit }) {
     commit('SET_SUBCATEGORY_NULL')
+  },
+  async ADD_DRUG_TO_SUBCATEGORY(
+    { commit },
+    { categoryid, subcategoryid, drug }
+  ) {
+    await this.$axios.put(
+      '/categories/' +
+        categoryid +
+        '/subcategories/' +
+        subcategoryid +
+        '/drugs/' +
+        drug.Id
+    )
+    commit('ADD_DRUG_TO_SUBCATEGORY', drug)
+  },
+  async REMOVE_DRUG_FROM_SUBCATEGORY(
+    { commit },
+    { categoryid, subcategoryid, drug }
+  ) {
+    await this.$axios.delete(
+      '/categories/' +
+        categoryid +
+        '/subcategories/' +
+        subcategoryid +
+        '/drugs/' +
+        drug.Id
+    )
+    commit('REMOVE_DRUG_FROM_SUBCATEGORY', drug)
   }
 }
