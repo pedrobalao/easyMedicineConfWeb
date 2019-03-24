@@ -1,20 +1,26 @@
 <template>
   <div>
     <h1>{{description}}</h1>
-    <b-form>
-      <b-form-group id="exampleInputGroup1" label="Nome:" label-for="exampleInput1">
-        <div>
-          <b-form-input
-            id="exampleInput1"
-            type="text"
-            v-model="description"
-            required
-            placeholder="Descrição"
-          ></b-form-input>
-          <b-button variant="success" :disabled="description===''" @click="savecategory()">{{editmode ? "Renomear":"Criar"}}</b-button>
-        </div>
-      </b-form-group>
+
+     <b-form>
+      <b-input-group prepend="Nome" class="mt-3">
+        <b-form-input
+          id="exampleInput1"
+          type="text"
+          v-model="description"
+          required
+          placeholder="Descrição"
+        ></b-form-input>
+        <b-input-group-append>
+          <b-button class="nomgr"
+            variant="success"
+            :disabled="description===''"
+            @click="savecategory()"
+          >{{editmode ? "Renomear":"Criar"}}</b-button>
+        </b-input-group-append>
+      </b-input-group>
     </b-form>
+
 
     <div v-if="editmode">
       <h2>Sub-Categorias</h2>

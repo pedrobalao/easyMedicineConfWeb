@@ -32,6 +32,7 @@ html {
 .btn {
   margin-top: 5px;
   margin-bottom: 5px;
+  margin-left: 5px;
 }
 
 .spa {

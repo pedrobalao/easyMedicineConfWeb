@@ -1,29 +1,31 @@
 <template>
   <div>
     <h1>{{description}}</h1>
+
     <b-form>
-      <b-form-group id="exampleInputGroup1" label="Nome:" label-for="exampleInput1">
-        <div>
-          <b-form-input
-            id="exampleInput1"
-            type="text"
-            v-model="description"
-            required
-            placeholder="Descrição"
-          ></b-form-input>
+      <b-input-group prepend="Nome" class="mt-3">
+        <b-form-input
+          id="exampleInput1"
+          type="text"
+          v-model="description"
+          required
+          placeholder="Descrição"
+        ></b-form-input>
+        <b-input-group-append>
           <b-button
+            class="nomgr"
             variant="success"
             :disabled="description===''"
             @click="savesubcategory()"
           >{{editmode ? "Renomear":"Criar"}}</b-button>
-        </div>
-      </b-form-group>
+        </b-input-group-append>
+      </b-input-group>
     </b-form>
 
     <div v-if="editmode">
       <h2>Drugs</h2>
 
-      <b-form-group id="drugsGroup1" label="Medicamento" label-for="medicamentoInput">
+      <div class="input-group mb-3">
         <v-autocomplete
           :items="searchResult"
           v-model="drug"
@@ -31,9 +33,21 @@
           :component-item="template"
           @update-items="onSearch"
           @input="drugChanged"
+          :input-attrs="{class: 'form-control'}"
         ></v-autocomplete>
-      </b-form-group>
-      <b-button :disabled="drug==null" @click.stop="adddrug(drug)" variant="secondary">Adicionar</b-button>
+        <b-button
+          :disabled="drug==null"
+          @click.stop="adddrug(drug)"
+          variant="secondary"
+          class="btn btn-secondary nomgr"
+        >Adicionar</b-button>
+        <b-button
+          :disabled="drug==null"
+          @click.stop="adddrug(drug)"
+          variant="secondary"
+          class="btn btn-secondary nomgr"
+        >Criar Medicamento</b-button>
+      </div>
 
       <b-list-group>
         <b-list-group-item
@@ -44,6 +58,7 @@
           <div>{{element.Name}}</div>
 
           <div>
+            <b-button size="sm" @click.stop="editdrug(element)" variant="secondary">Editar</b-button>
             <b-button size="sm" @click.stop="removedrug(element)" variant="danger">Apagar</b-button>
           </div>
         </b-list-group-item>
@@ -153,6 +168,17 @@ export default {
         subcategoryid: this.$store.state.categories.subcategory.Id,
         drug: drug
       })
+    },
+    editdrug(drug) {
+      this.$router.push({
+        path:
+          '/categories/' +
+          this.$store.state.categories.subcategory.CategoryId +
+          '/subcategories/' +
+          this.$store.state.categories.subcategory.Id +
+          '/drugs/' +
+          drug.Id
+      })
     }
   }
 }
@@ -160,6 +186,14 @@ export default {
 
 
 <style>
+.nomgr {
+  margin-top: 0;
+}
+
+.input-group-text {
+  height: calc(2.25rem + 2px);
+}
+
 .v-autocomplete-input {
   display: block;
   width: 100%;

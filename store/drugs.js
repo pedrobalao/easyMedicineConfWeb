@@ -2,10 +2,37 @@
 
 export const state = () => ({
   searchResult: [],
-  drug: null
+  drug: {
+    Id: null,
+    Name: null,
+    ConterIndications: null,
+    SecondaryEfects: null,
+    ComercialBrands: null,
+    Obs: null,
+    Presentation: null,
+    indications: []
+  }
 })
 
 export const mutations = {
+  updateName(state, value) {
+    state.drug.Name = value
+  },
+  updateConterIndications(state, value) {
+    state.drug.ConterIndications = value
+  },
+  updateSecondaryEfects(state, value) {
+    state.drug.SecondaryEfects = value
+  },
+  updateComercialBrands(state, value) {
+    state.drug.ComercialBrands = value
+  },
+  updateObs(state, value) {
+    state.drug.Obs = value
+  },
+  updatePresentation(state, value) {
+    state.drug.Presentation = value
+  },
   SET_SEARCH_RESULT(state, result) {
     // eslint-disable-next-line
     // console.log(diseases)
@@ -26,7 +53,7 @@ export const mutations = {
 export const actions = {
   async SEARCH({ commit }, searchString) {
     // eslint-disable-next-line
-    console.log("searching for "+searchString)
+    console.log('searching for ' + searchString)
     const response = await this.$axios.get(
       '/drugs/search?drugname=' + searchString
     )
@@ -40,9 +67,12 @@ export const actions = {
     console.log('CLEAR_SEARCH_RESULT')
     commit('CLEAR_SEARCH_RESULT')
   },
-  SET_DRUG({ commit }, drug) {
+  async SET_DRUG({ commit }, drugid) {
     // eslint-disable-next-line
     // console.log(diseases)
-    commit('SET_DRUG', drug)
+    const response = await this.$axios.get('/drugs/' + drugid)
+    // eslint-disable-next-line
+    console.log(response.data.drug)
+    commit('SET_DRUG', response.data.drug)
   }
 }
