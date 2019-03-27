@@ -60,53 +60,32 @@
         ></b-form-textarea>
       </b-form-group>
     </b-form>
+    <h4>Indicações</h4>
+    <b-form-group id="exampleInputGroup1" label="Nova Indicação:" label-for="exampleInput1">
+      <b-form-input id="exampleInput1" type="text" v-model="newindication" placeholder="Indicação"></b-form-input>
+    </b-form-group>
+    <b-button
+      @click="addIndication(newindication)"
+      variant="primary"
+      :disabled="newindication==''"
+    >Adicionar Indicação</b-button>
     <b-card-group deck>
-      <b-card
-        v-for="(indication) in indications"
-        :key="indication.Id"
-        :header="indication.IndicationText"
-      >
-        <b-list-group>
-          <b-list-group-item v-for="(dose, index) in indication.doses" :key="index">
-            <b-input-group prepend="Via" class="mt-3">
-              <b-form-input v-model="dose.IdVia" readonly/>
-            </b-input-group>
-            <b-input-group prepend="Dose Pediátrica" class="mt-3">
-              <b-form-input v-model="dose.PediatricDose" readonly/>
-            </b-input-group>
-            <b-input-group prepend="Unidade Dose Pediátrica" class="mt-3">
-              <b-form-input v-model="dose.IdUnityPediatricDose" readonly/>
-            </b-input-group>
-            <b-input-group prepend="Dose Adulta" class="mt-3">
-              <b-form-input v-model="dose.AdultDose" readonly/>
-            </b-input-group>
-            <b-input-group prepend="Unidade Dose Adulta" class="mt-3">
-              <b-form-input v-model="dose.IdUnityAdultDose" readonly/>
-            </b-input-group>
-            <b-input-group prepend="Tomas Diárias" class="mt-3">
-              <b-form-input v-model="dose.TakesPerDay" readonly/>
-            </b-input-group>
-            <b-input-group prepend="Dose Máxima por dia" class="mt-3">
-              <b-form-input v-model="dose.MaxDosePerDay" readonly/>
-            </b-input-group>
-            <b-input-group prepend="Unidade Dose Máxima por dia" class="mt-3">
-              <b-form-input v-model="dose.IdUnityMaxDosePerDay" readonly/>
-            </b-input-group>
-            <b-input-group prepend="Observações" class="mt-3">
-              <b-form-input v-model="dose.obs" readonly/>
-            </b-input-group>
-          </b-list-group-item>
-        </b-list-group>
-      </b-card>
+      <drugIndicationViewer
+        v-for="(indication,i) in indications"
+        :key="i"
+        :indication="indication"
+        :index="i"
+      />
     </b-card-group>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import drugIndicationViewer from '~/components/DrugIndicationViewer.vue'
 
 export default {
-  components: {},
+  components: { drugIndicationViewer },
   props: {
     editmode: {
       type: Boolean,
@@ -114,12 +93,11 @@ export default {
     }
   },
   data() {
-    // eslint-disable-next-line
-    console.log('drug data')
     return {
       loading: false,
       rows: 3,
-      maxrows: 6
+      maxrows: 6,
+      newindication: ''
     }
   },
   computed: {
@@ -176,6 +154,17 @@ export default {
       get() {
         return this.$store.state.drugs.drug.indications
       }
+    }
+  },
+  methods: {
+    addIndication(indicationText) {
+      let indication = {
+        Id: null,
+        DrugId: this.$store.state.drugs.drug.Id,
+        IndicationText: indicationText,
+        doses: []
+      }
+      this.$store.dispatch('drugs/ADD_INDICATION_TO_DRUG', indication)
     }
   }
 }

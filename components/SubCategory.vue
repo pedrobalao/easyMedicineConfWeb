@@ -42,8 +42,7 @@
           class="btn btn-secondary nomgr"
         >Adicionar</b-button>
         <b-button
-          :disabled="drug==null"
-          @click.stop="adddrug(drug)"
+          @click.stop="newdrug(drug)"
           variant="secondary"
           class="btn btn-secondary nomgr"
         >Criar Medicamento</b-button>
@@ -179,7 +178,17 @@ export default {
           '/drugs/' +
           drug.Id
       })
-    }
+    },
+    newdrug() {
+      this.$router.push({
+        path:
+          '/categories/' +
+          this.$store.state.categories.subcategory.CategoryId +
+          '/subcategories/' +
+          this.$store.state.categories.subcategory.Id +
+          '/drugs/create'
+      })
+    },
   }
 }
 </script>
