@@ -2,7 +2,7 @@
   <div>
     <div>
       <b-button size="sm" @click.stop="editdrug(element)" variant="secondary">Editar</b-button>
-      <b-button size="sm" @click.stop="removedrug(element)" variant="danger">Apagar</b-button>
+      <b-button size="sm" @click.stop="deleteDose()" variant="danger">Apagar</b-button>
     </div>
     <b-input-group id="viasGroup1" prepend="Via" class="mt-3">
       <b-form-input v-model="dose.IdVia" readonly/>
@@ -54,12 +54,26 @@ export default {
     dose: {
       type: Object,
       required: true
+    },
+    index: {
+      type: Number,
+      required: true
+    },
+    indication: {
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
       rows: 3,
       maxrows: 6
+    }
+  },
+  methods:
+  {
+    deleteDose() {
+      this.$store.dispatch('drugs/DELETE_DOSE', {indication: this.indication, dose: this.dose, index: this.index})
     }
   }
 }

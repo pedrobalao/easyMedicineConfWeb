@@ -6,6 +6,13 @@
       </div>
     </b-modal>
 
+    <b-modal ref="doseModal" size="lg" hide-footer title="Nova Dose">
+      <div>
+        <drugIndicationDose @onsubmitted="hideDoseModal" />
+      </div>
+    </b-modal>
+    
+
     <b-card>
       <b-card-header>
         {{indication.IndicationText}}
@@ -19,7 +26,7 @@
         <div>
           <b-list-group>
             <b-list-group-item v-for="(dose, i) in indication.doses" :key="i">
-              <drugIndicationDoseViewer :dose="dose"/>
+              <drugIndicationDoseViewer :dose="dose" :index="i" :indication="indication"/>
             </b-list-group-item>
           </b-list-group>
         </div>
@@ -30,9 +37,10 @@
 <script>
 import drugIndicationDoseViewer from '~/components/DrugIndicationDoseViewer.vue'
 import drugIndication from '~/components/DrugIndication.vue'
+import drugIndicationDose from '~/components/DrugIndicationDose.vue'
 
 export default {
-  components: { drugIndicationDoseViewer, drugIndication },
+  components: { drugIndicationDoseViewer, drugIndication, drugIndicationDose },
   props: {
     indication: {
       type: Object,
@@ -54,7 +62,16 @@ export default {
     },
     deleteIndication (indication, index){
       this.$store.dispatch('drugs/DEL_INDICATION', index)
+    },
+    addDose(indication) {
+      this.$store.dispatch('drugs/SET_INDICATION', this.indication)
+      this.$store.dispatch('drugs/SET_DOSE_NULL')
+      this.$refs.doseModal.show()
+    },
+    hideDoseModal() {
+      this.$refs.doseModal.hide()
     }
+
   }
 
 }

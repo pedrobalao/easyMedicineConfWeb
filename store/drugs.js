@@ -10,7 +10,9 @@ export const state = () => ({
     ComercialBrands: null,
     Obs: null,
     Presentation: null,
-    indications: []
+    indications: [],
+    variables: [],
+    calculations: []
   },
   dose: {
     Id: null,
@@ -30,7 +32,16 @@ export const state = () => ({
     DrugId: null,
     IndicationText: null,
     doses: []
-  }
+  },
+  calculation: {
+    Type: 'PED',
+    Function: null,
+    ResultDescription: null,
+    ResultIdUnit: null,
+    Description: null
+  },
+  categoryid: null,
+  subcategoryid: null
 })
 
 export const mutations = {
@@ -82,16 +93,60 @@ export const mutations = {
   updatedoseobs(state, value) {
     state.dose.obs = value
   },
+  updatecategoryid(state, value) {
+    state.categoryid = value
+  },
+  updatesubcategoryid(state, value) {
+    state.subcategoryid = value
+  },
+  updateVariables(state, value) {
+    state.drug.variables = value
+  },
+  updateCalculations(state, value) {
+    state.drug.calculations = value
+  },
+  updatecalculationdescription(state, value) {
+    state.calculation.Description = value
+  },
+  updatecalculationfunction(state, value) {
+    state.calculation.Function = value
+  },
+  updatecalculationresultidunit(state, value) {
+    state.calculation.ResultIdUnit = value
+  },
+  updatecalculationresultdescription(state, value) {
+    state.calculation.ResultDescription = value
+  },
   ADD_INDICATION_TO_DRUG(state, indication) {
     state.drug.indications.push(indication)
   },
   DEL_INDICATION(state, index) {
     // eslint-disable-next-line
-    console.log('Del indication '+index)
+    console.log('Del indication ' + index)
     state.drug.indications.splice(index, 1)
   },
   ADD_DOSE_TO_INDICATION(state, dose) {
     state.indication.doses.push(dose)
+    state.drug.indications.forEach((element, index) => {
+      if (
+        (state.indication.Id != null && state.indication.Id === element.Id) ||
+        (state.indication.Id == null &&
+          state.indication.IndicationText === element.IndicationText)
+      ) {
+        state.drug.indications[index] = state.indication
+      }
+    })
+  },
+  ADD_CALCULATION_TO_DRUG(state, calculation) {
+    state.drug.calculations.push(calculation)
+  },
+  DEL_CALCULATION(state, index) {
+    // eslint-disable-next-line
+    state.drug.calculations.splice(index, 1)
+  },
+  REPLACE_CALCULATION(state, { index, calculation }) {
+    // eslint-disable-next-line
+    state.drug.calculations[index] = calculation
   },
   REMOVE_DOSE_FROM_INDICATION(state, index) {
     state.indication.doses.splice(index, 1)
@@ -111,6 +166,18 @@ export const mutations = {
     // console.log(diseases)
     state.drug = drug
   },
+  SET_CALCULATION(state, calculation) {
+    state.calculation = calculation
+  },
+  SET_CALCULATION_NULL(state) {
+    state.calculation = {
+      Type: 'PED',
+      Function: null,
+      ResultDescription: null,
+      ResultIdUnit: null,
+      Description: null
+    }
+  },
   SET_INDICATION(state, indication) {
     state.indication = indication
   },
@@ -126,8 +193,28 @@ export const mutations = {
       ComercialBrands: null,
       Obs: null,
       Presentation: null,
-      indications: []
+      indications: [],
+      variables: [],
+      calculations: []
     }
+  },
+  SET_DOSE_NULL(state) {
+    state.dose = {
+      Id: null,
+      IndicationId: null,
+      IdVia: null,
+      PediatricDose: null,
+      IdUnityPediatricDose: null,
+      AdultDose: null,
+      IdUnityAdultDose: null,
+      TakesPerDay: null,
+      MaxDosePerDay: null,
+      IdUnityMaxDosePerDay: null,
+      obs: null
+    }
+  },
+  DELETE_DOSE(state, { indication, dose, index }) {
+    indication.doses.splice(index, 1)
   }
 }
 
@@ -168,7 +255,43 @@ export const actions = {
   SET_DRUG_NULL({ commit }) {
     commit('SET_DRUG_NULL')
   },
+  SET_DOSE_NULL({ commit }) {
+    commit('SET_DOSE_NULL')
+  },
+  SET_CALCULATION_NULL({ commit }) {
+    commit('SET_CALCULATION_NULL')
+  },
+  SET_CALCULATION({ commit }, calculcation) {
+    commit('SET_CALCULATION', calculcation)
+  },
   DEL_INDICATION({ commit }, index) {
     commit('DEL_INDICATION', index)
+  },
+  ADD_DOSE_TO_INDICATION({ commit }, dose) {
+    commit('ADD_DOSE_TO_INDICATION', dose)
+  },
+  ADD_CALCULATION_TO_DRUG({ commit }, calculcation) {
+    commit('ADD_CALCULATION_TO_DRUG', calculcation)
+  },
+  DELETE_DOSE({ commit }, { indication, dose, index }) {
+    commit('DELETE_DOSE', { indication, dose, index })
+  },
+  async SAVE({ commit }, { drug, categoryid, subcategoryid, editmode }) {
+    let baseUrl = '/drugs/'
+    if (categoryid != null && subcategoryid != null) {
+      baseUrl =
+        '/categories/' +
+        categoryid +
+        '/subcategories/' +
+        subcategoryid +
+        baseUrl
+    }
+    if (editmode) {
+      await this.$axios.put(baseUrl + drug.Id, drug)
+    } else {
+      const response = await this.$axios.post(baseUrl, drug)
+
+      commit('SET_DRUG', response.data.drug)
+    }
   }
 }

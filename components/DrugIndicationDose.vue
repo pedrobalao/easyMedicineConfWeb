@@ -6,40 +6,40 @@
         </b-form-select>
       </b-form-group>
 
-    <b-input-group prepend="Dose Pediátrica" class="mt-3">
+    <b-form-group label="Dose Pediátrica" class="mb-3">
       <b-form-input v-model="pediatricdose"/>
-    </b-input-group>
+    </b-form-group>
 
-    <b-input-group prepend="Unidade Dose Pediátrica" class="mt-3">
+    <b-form-group label="Unidade Dose Pediátrica" class="mb-3">
       <b-form-select v-model="idunitypediatricdose" class="mb-3" id="unitnput">
         <option v-for="un in unities" :key="un.Id" :value="un.Id">{{un.Id}}</option>
       </b-form-select>
-    </b-input-group>
+    </b-form-group>
 
-    <b-input-group prepend="Dose Adulta" class="mt-3">
+    <b-form-group label="Dose Adulta" class="mb-3">
       <b-form-input v-model="adultdose"/>
-    </b-input-group>
+    </b-form-group>
 
-    <b-input-group prepend="Unidade Dose Adulta" class="mt-3">
+    <b-form-group label="Unidade Dose Adulta" class="mb-3">
       <b-form-select v-model="idunityadultdose" class="mb-3" id="unitnput">
         <option v-for="un in unities" :key="un.Id" :value="un.Id">{{un.Id}}</option>
       </b-form-select>
-    </b-input-group>
+    </b-form-group>
 
-    <b-input-group prepend="Tomas Diárias" class="mt-3">
+    <b-form-group label="Tomas Diárias" class="mb-3">
       <b-form-input v-model="takesperday"/>
-    </b-input-group>
-    <b-input-group prepend="Dose Máxima por dia" class="mt-3">
+    </b-form-group>
+    <b-form-group label="Dose Máxima por dia" class="mb-3">
       <b-form-input v-model="maxdoseperday"/>
-    </b-input-group>
+    </b-form-group>
 
-    <b-input-group prepend="Unidade Dose Máxima por dia" class="mt-3">
+    <b-form-group label="Unidade Dose Máxima por dia" class="mb-3">
       <b-form-select v-model="idunitymaxdoseperday" class="mb-3" id="unitnput">
         <option v-for="un in unities" :key="un.Id" :value="un.Id">{{un.Id}}</option>
       </b-form-select>
-    </b-input-group>
+    </b-form-group>
 
-    <b-input-group prepend="Observações" class="mt-3">
+    <b-form-group label="Observações" class="mb-3">
       <b-form-textarea
         type="text"
         v-model="obs"
@@ -48,18 +48,17 @@
         :rows="rows"
         :max-rows="maxrows"
       ></b-form-textarea>
-    </b-input-group>
+    </b-form-group>
+
+    <b-button @click="save" variant="primary">Guardar</b-button>
   </div>
 </template>
 <script>
 import { mapState } from 'vuex'
 
 export default {
+  event: 'onsubmitted',
   props: {
-    editmode: {
-      type: Boolean,
-      required: true
-    }
   },
   data() {
     return {
@@ -77,7 +76,7 @@ export default {
         return this.$store.state.drugs.dose.IdVia
       },
       set(value) {
-        this.$store.commit('drugs/updateindicationIdVia', value)
+        this.$store.commit('drugs/updatedoseIdVia', value)
       }
     },
     pediatricdose: {
@@ -85,7 +84,7 @@ export default {
         return this.$store.state.drugs.dose.PediatricDose
       },
       set(value) {
-        this.$store.commit('drugs/updateindicationPediatricDose', value)
+        this.$store.commit('drugs/updatedosePediatricDose', value)
       }
     },
     idunitypediatricdose: {
@@ -93,7 +92,7 @@ export default {
         return this.$store.state.drugs.dose.IdUnityPediatricDose
       },
       set(value) {
-        this.$store.commit('drugs/updateindicationIdUnityPediatricDose', value)
+        this.$store.commit('drugs/updatedoseIdUnityPediatricDose', value)
       }
     },
     adultdose: {
@@ -101,7 +100,7 @@ export default {
         return this.$store.state.drugs.dose.AdultDose
       },
       set(value) {
-        this.$store.commit('drugs/updateindicationAdultDose', value)
+        this.$store.commit('drugs/updatedoseAdultDose', value)
       }
     },
     idunityadultdose: {
@@ -109,7 +108,7 @@ export default {
         return this.$store.state.drugs.dose.IdUnityAdultDose
       },
       set(value) {
-        this.$store.commit('drugs/updateindicationIdUnityAdultDose', value)
+        this.$store.commit('drugs/updatedoseIdUnityAdultDose', value)
       }
     },
     takesperday: {
@@ -117,7 +116,7 @@ export default {
         return this.$store.state.drugs.dose.TakesPerDay
       },
       set(value) {
-        this.$store.commit('drugs/updateindicationTakesPerDay', value)
+        this.$store.commit('drugs/updatedoseTakesPerDay', value)
       }
     },
     maxdoseperday: {
@@ -125,7 +124,7 @@ export default {
         return this.$store.state.drugs.dose.MaxDosePerDay
       },
       set(value) {
-        this.$store.commit('drugs/updateindicationMaxDosePerDay', value)
+        this.$store.commit('drugs/updatedoseMaxDosePerDay', value)
       }
     },
     idunitymaxdoseperday: {
@@ -133,7 +132,7 @@ export default {
         return this.$store.state.drugs.dose.IdUnityMaxDosePerDay
       },
       set(value) {
-        this.$store.commit('drugs/updateindicationIdUnityMaxDosePerDay', value)
+        this.$store.commit('drugs/updatedoseIdUnityMaxDosePerDay', value)
       }
     },
     obs: {
@@ -141,10 +140,17 @@ export default {
         return this.$store.state.drugs.dose.obs
       },
       set(value) {
-        this.$store.commit('drugs/updateindicationobs', value)
+        this.$store.commit('drugs/updatedoseobs', value)
       }
     }
+  },
+  methods: {
+    save (){
+      this.$store.dispatch('drugs/ADD_DOSE_TO_INDICATION', this.$store.state.drugs.dose)
+      this.$emit('onsubmitted')
+    }
   }
+
 }
 </script>
 

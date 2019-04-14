@@ -50,7 +50,7 @@
 
       <b-list-group>
         <b-list-group-item
-          v-for="(element) in drugs"
+          v-for="(element, index) in drugs"
           :key="element.Id"
           class="d-flex justify-content-between align-items-center"
         >
@@ -58,7 +58,7 @@
 
           <div>
             <b-button size="sm" @click.stop="editdrug(element)" variant="secondary">Editar</b-button>
-            <b-button size="sm" @click.stop="removedrug(element)" variant="danger">Apagar</b-button>
+            <b-button size="sm" @click.stop="removedrug(element, index)" variant="danger">Apagar</b-button>
           </div>
         </b-list-group-item>
       </b-list-group>
@@ -161,11 +161,12 @@ export default {
         drug: drug
       })
     },
-    async removedrug(drug) {
+    async removedrug(drug, index) {
       await this.$store.dispatch('categories/REMOVE_DRUG_FROM_SUBCATEGORY', {
         categoryid: this.$store.state.categories.subcategory.CategoryId,
         subcategoryid: this.$store.state.categories.subcategory.Id,
-        drug: drug
+        drug: drug,
+        index: index
       })
     },
     editdrug(drug) {

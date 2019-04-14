@@ -82,13 +82,8 @@ export const mutations = {
   ADD_DRUG_TO_SUBCATEGORY(state, drug) {
     state.subcategory.drugs.push(drug)
   },
-  REMOVE_DRUG_FROM_SUBCATEGORY(state, drug) {
-    for (let index = 0; index < state.subcategory.drugs.length; index++) {
-      if (state.subcategory.drugs[index].id === drug.id) {
-        state.subcategory.drugs.splice(index, 1)
-        return
-      }
-    }
+  REMOVE_DRUG_FROM_SUBCATEGORY(state, index) {
+    state.subcategory.drugs.splice(index, 1)
   }
 }
 
@@ -167,19 +162,20 @@ export const actions = {
     { commit },
     { categoryid, subcategoryid, drug }
   ) {
-    await this.$axios.put(
+    await this.$axios.post(
       '/categories/' +
         categoryid +
         '/subcategories/' +
         subcategoryid +
         '/drugs/' +
-        drug.Id
+        drug.Id +
+        '/associate'
     )
     commit('ADD_DRUG_TO_SUBCATEGORY', drug)
   },
   async REMOVE_DRUG_FROM_SUBCATEGORY(
     { commit },
-    { categoryid, subcategoryid, drug }
+    { categoryid, subcategoryid, drug, index }
   ) {
     await this.$axios.delete(
       '/categories/' +
@@ -187,8 +183,9 @@ export const actions = {
         '/subcategories/' +
         subcategoryid +
         '/drugs/' +
-        drug.Id
+        drug.Id +
+        '/diassociate'
     )
-    commit('REMOVE_DRUG_FROM_SUBCATEGORY', drug)
+    commit('REMOVE_DRUG_FROM_SUBCATEGORY', index)
   }
 }
