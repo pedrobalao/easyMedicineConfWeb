@@ -23,7 +23,7 @@ export default {
 
     store.commit('drugs/updatecategoryid', this.categoryid)
     store.commit('drugs/updatesubcategoryid', this.subcategoryid)
-    
+
     // eslint-disable-next-line
     console.log('param ' + this.categoryid + ': ' + this.subcategoryid)
     await store.dispatch('unities/GET_UNITIES')
@@ -35,19 +35,13 @@ export default {
   },
   methods: {
     submitted() {
-      if (this.categoryid != null && this.subcategoryid != null) {
-        this.$router.push({
-          path:
-            'categories/' +
-            this.categoryid +
-            '/subcategories/' +
-            this.subcategoryid +
-            '/drugs/' +
-            this.$store.state.drugs.drug.Id
-        })
-      } else {
-        this.$router.push({ path: '/drugs/' + this.$store.state.drugs.drug.Id })
-      }
+      this.$router.push({
+        path:
+          '/categories/' +
+          this.$store.state.drugs.categoryid +
+          '/subcategories/' +
+          this.$store.state.drugs.subcategoryid
+      })
     }
   }
 }

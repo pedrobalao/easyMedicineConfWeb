@@ -32,24 +32,19 @@ export default {
     await store.dispatch('drugs/SET_DRUG', drugid)
     await store.dispatch('variables/GET_VARIABLES')
     await store.dispatch('unities/GET_UNITIES')
+    await store.dispatch('vias/GET_VIAS')
     // eslint-disable-next-line
     console.log('after drug fetch ')
   },
   methods: {
     submitted() {
-      if (this.categoryid != null && this.subcategoryid != null) {
-        this.$router.push({
-          path:
-            'categories/' +
-            this.categoryid +
-            '/subcategories/' +
-            this.subcategoryid +
-            '/drugs/' +
-            this.$store.state.drugs.drug.Id
-        })
-      } else {
-        this.$router.push({ path: '/drugs/' + this.$store.state.drugs.drug.Id })
-      }
+      this.$router.push({
+        path:
+          '/categories/' +
+          this.$store.state.drugs.categoryid +
+          '/subcategories/' +
+          this.$store.state.drugs.subcategoryid
+      })
     }
   }
 }

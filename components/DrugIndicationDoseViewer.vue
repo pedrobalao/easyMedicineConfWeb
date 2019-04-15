@@ -1,7 +1,12 @@
 <template>
   <div>
+    <b-modal ref="doseModal" size="lg" hide-footer title="Editar Dose">
+      <div>
+        <drugIndicationDose @onsubmitted="hideDoseModal" />
+      </div>
+    </b-modal>
     <div>
-      <b-button size="sm" @click.stop="editdrug(element)" variant="secondary">Editar</b-button>
+      <b-button size="sm" @click.stop="editDose()" variant="secondary">Editar</b-button>
       <b-button size="sm" @click.stop="deleteDose()" variant="danger">Apagar</b-button>
     </div>
     <b-input-group id="viasGroup1" prepend="Via" class="mt-3">
@@ -49,7 +54,10 @@
   </div>
 </template>
 <script>
+import drugIndicationDose from '~/components/DrugIndicationDose.vue'
+
 export default {
+  components: { drugIndicationDose },
   props: {
     dose: {
       type: Object,
@@ -74,6 +82,14 @@ export default {
   {
     deleteDose() {
       this.$store.dispatch('drugs/DELETE_DOSE', {indication: this.indication, dose: this.dose, index: this.index})
+    },
+    editDose(indication) {
+      this.$store.dispatch('drugs/SET_INDICATION', this.indication)
+      this.$store.dispatch('drugs/SET_DOSE', this.dose)
+      this.$refs.doseModal.show()
+    },
+    hideDoseModal() {
+      this.$refs.doseModal.hide()
     }
   }
 }

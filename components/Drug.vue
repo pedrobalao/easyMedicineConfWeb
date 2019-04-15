@@ -2,7 +2,7 @@
   <div>
     <b-modal ref="modalCalculation" size="lg" hide-footer :title="modalTitle">
       <div>
-        <drugCalculation @onsubmitted='calculationSubmitted'/>
+        <drugCalculation @onsubmitted="calculationSubmitted"/>
       </div>
     </b-modal>
 
@@ -86,29 +86,24 @@
 
     <h4>Cálculos de Doses</h4>
     <b-form-group id="formula" label="Variáveis" label-for="formiput">
-        <multiselect
-          v-model="mcVariables"
-          :options="variables"
-          :multiple="true"
-          :taggable="true"
-          track-by="Id"
-          label="Id"
-        ></multiselect>
-      </b-form-group>
+      <multiselect
+        v-model="mcVariables"
+        :options="variables"
+        :multiple="true"
+        :taggable="true"
+        track-by="Id"
+        label="Id"
+      ></multiselect>
+    </b-form-group>
 
-    <b-button
-      @click="showModal('NEW', null)"
-      variant="primary"
-    >Adicionar Cálculo</b-button>
+    <b-button @click="showModal('NEW', null)" variant="primary">Adicionar Cálculo</b-button>
     <b-list-group>
       <b-list-group-item
         v-for="(element, index) in calculations"
         :key="element.Id"
         class="d-flex justify-content-between align-items-center"
       >
-        <div>
-          {{element.Description}}
-        </div>
+        <div>{{element.Description}}</div>
 
         <div>
           <b-button size="sm" @click.stop="showModal('EDIT', element)" variant="secondary">Editar</b-button>
@@ -117,8 +112,6 @@
       </b-list-group-item>
     </b-list-group>
 
-    
-    
     <b-button @click="onSubmit" variant="primary">Gravar</b-button>
   </div>
 </template>
@@ -225,24 +218,25 @@ export default {
       this.$store.dispatch('drugs/ADD_INDICATION_TO_DRUG', indication)
     },
     async onSubmit() {
+      this.$nuxt.$loading.start()
       await this.$store.dispatch('drugs/SAVE', {
         drug: this.$store.state.drugs.drug,
         categoryid: this.$store.state.drugs.categoryid,
         subcategoryid: this.$store.state.drugs.subcategoryid,
         editmode: this.editmode
       })
+      this.$nuxt.$loading.finish()
       this.$emit('onsubmitted')
     },
     showModal(action, calculation) {
       if (action === 'NEW') {
         this.modalTitle = 'Novo Cálculo de Dose'
         this.$store.dispatch('drugs/SET_CALCULATION_NULL')
+      } else {
+        this.modalTitle = 'Editar Cálculo de Dose'
+        this.$store.dispatch('drugs/SET_CALCULATION', calculation)
       }
-      else {
-          this.modalTitle = 'Editar Cálculo de Dose'
-          this.$store.dispatch('drugs/SET_CALCULATION', calculation)
-      }
-      
+
       this.$refs.modalCalculation.show()
     },
     hideModal() {
@@ -251,8 +245,8 @@ export default {
     calculationSubmitted() {
       this.hideModal()
     },
-    removeTreatment(index){
-        this.$store.dispatch('diseases/DELETE_TREATMENT',index)
+    removeTreatment(index) {
+      this.$store.dispatch('diseases/DELETE_TREATMENT', index)
     }
   }
 }
