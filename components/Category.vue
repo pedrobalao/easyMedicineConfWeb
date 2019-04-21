@@ -2,17 +2,18 @@
   <div>
     <h1>{{description}}</h1>
 
-     <b-form>
+    <b-form>
       <b-input-group prepend="Nome" class="mt-3">
         <b-form-input
           id="exampleInput1"
           type="text"
           v-model="description"
           required
-          placeholder="Descrição"
+          placeholder="Nome da Categoria"
         ></b-form-input>
         <b-input-group-append>
-          <b-button class="nomgr"
+          <b-button
+            class="nomgr"
             variant="success"
             :disabled="description===''"
             @click="savecategory()"
@@ -21,10 +22,27 @@
       </b-input-group>
     </b-form>
 
-
     <div v-if="editmode">
       <h2>Sub-Categorias</h2>
-      <b-button variant="success" @click="savecategory()">Adicionar Sub-Categoria</b-button>
+      <b-form>
+        <b-input-group prepend="Nome" class="mt-3">
+          <b-form-input
+            id="exampleInput1"
+            type="text"
+            v-model="subCatDescription"
+            required
+            placeholder="Nome da Sub-Categoria"
+          ></b-form-input>
+          <b-input-group-append>
+            <b-button
+              class="nomgr"
+              variant="success"
+              :disabled="subCatDescription===''"
+              @click="savesubcategory()"
+            >Adicionar</b-button>
+          </b-input-group-append>
+        </b-input-group>
+      </b-form>
       <b-list-group>
         <b-list-group-item
           v-for="(element, index) in subcategories"
@@ -45,7 +63,7 @@
 
 <script>
 import { mapState } from 'vuex'
-// import medicalcalculation from '~/components/MedicalCalculation.vue'
+import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: {
@@ -58,7 +76,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      subCatDescription: ''
+    }
   },
   computed: {
     ...mapState({
@@ -82,19 +102,56 @@ export default {
   },
   methods: {
     async savecategory() {
-      await this.$store.dispatch(
+      await cm(
+        this,
+        'categories/SAVE_CATEGORY',
+        this.$store.state.categories.category,
+        'Categoria gravada com sucesso',
+        null
+      )
+      /* await this.$store.dispatch(
         'categories/SAVE_CATEGORY',
         this.$store.state.categories.category
-      )
-      if(!this.editmode)
-      {
-          this.$router.push({path:'/categories/'+this.$store.state.categories.category.id})
+      ) */
+      if (!this.editmode) {
+        this.$router.push({
+          path: '/categories/' + this.$store.state.categories.category.id
+        })
       }
     },
     edit(subcategory) {
-      this.$router.push({path:'/categories/'+this.$store.state.categories.category.id+'/subcategories/'+subcategory.Id})
-    }
+      this.$router.push({
+        path:
+          '/categories/' +
+          this.$store.state.categories.category.id +
+          '/subcategories/' +
+          subcategory.Id
+      })
+    },
+    async savesubcategory (){
+      let subcategory = {
+        Id: null,
+        Description: this.subCatDescription,
+        CategoryId: this.$store.state.categories.category.id,
+        drugs: []
+      }
 
+      await cm(
+        this,
+        'categories/SAVE_SUBCATEGORY',
+        subcategory,
+        'Sub-Categoria gravada com sucesso',
+        null
+      )
+
+      this.$router.push({
+        path:
+          '/categories/' +
+          this.$store.state.categories.category.id +
+          '/subcategories/' +
+          this.$store.state.categories.subcategory.Id
+      })
+    }
   }
 }
 </script>

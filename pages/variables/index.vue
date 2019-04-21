@@ -9,6 +9,7 @@
 <script>
 // import { mapState } from 'vuex'
 import variableslist from '~/components/VariablesList.vue'
+// import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: {

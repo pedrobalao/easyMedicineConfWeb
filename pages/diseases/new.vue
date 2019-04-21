@@ -3,6 +3,7 @@
 </template>
 <script>
 import editDisease from '~/components/EditDisease.vue'
+// import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: {

@@ -3,6 +3,7 @@
 </template>
 <script>
 import drug from '~/components/Drug.vue'
+// import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: {

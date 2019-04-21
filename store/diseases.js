@@ -237,6 +237,9 @@ export const actions = {
       commit('SET_DRUG', null)
     }
   },
+  SET_DRUG_NULL({ commit }) {
+    commit('SET_DRUG', null)
+  },
 
   DELETE_TREATMENT({ commit }, index) {
     // eslint-disable-next-line

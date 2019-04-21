@@ -9,6 +9,7 @@
 <script>
 // import { mapState } from 'vuex'
 import medicalcalculationlist from '~/components/MedicalCalculationList.vue'
+// import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: {

@@ -34,7 +34,10 @@ module.exports = {
   /*
   ** Plugins to load before mounting the App
   */
-  plugins: [{ src: '~plugins/nuxt-quill-plugin.js', ssr: false }],
+  plugins: [
+    '~/plugins/axios',
+    { src: '~plugins/nuxt-quill-plugin.js', ssr: false }
+  ],
 
   /*
   ** Nuxt.js modules
@@ -44,7 +47,8 @@ module.exports = {
     '@nuxtjs/axios',
     // Doc: https://bootstrap-vue.js.org/docs/
     'bootstrap-vue/nuxt',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
+    '@nuxtjs/toast'
   ],
   auth: {
     // Options
@@ -77,6 +81,22 @@ module.exports = {
       callback: '/login',
       home: '/'
     }
+  },
+
+  toast: {
+    position: 'top-center',
+    duration: 5000,
+    register: [
+      // Register custom toasts
+      {
+        name: 'easyerror',
+        message: 'Oops...Something went wrong',
+        options: {
+          type: 'error',
+          duration: 5000
+        }
+      }
+    ]
   },
 
   router: {

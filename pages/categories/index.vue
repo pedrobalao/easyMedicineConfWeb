@@ -9,6 +9,7 @@
 <script>
 // import { mapState } from 'vuex'
 import categorieslist from '~/components/CategoriesList.vue'
+// import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: {

@@ -53,6 +53,7 @@ import { mapState } from 'vuex'
 import Autocomplete from 'v-autocomplete'
 import 'v-autocomplete/dist/v-autocomplete.css'
 import drugtemplate from '~/components/DrugTemplate'
+import cm from '~/assets/js/call-manager.js'
 
 export default {
   event: 'onsubmitted',
@@ -131,14 +132,21 @@ export default {
     }
   },
   methods: {
-    async onSubmit() {
-      await this.$store.dispatch('diseases/ADD_TREATMENT', this.treatment)
-      await this.$store.dispatch('diseases/SET_TREATMENT_NULL')
+    onSubmit() {
+      this.$store.dispatch('diseases/ADD_TREATMENT', this.treatment)
+      this.$store.dispatch('diseases/SET_TREATMENT_NULL')
       this.$emit('onsubmitted')
     },
     async onSearch(text) {
       this.loading = true
-      await this.$store.dispatch('drugs/SEARCH', text)
+      await cm(
+        this,
+        'drugs/SEARCH',
+        text,
+        null,
+        null
+      )
+      // await this.$store.dispatch('drugs/SEARCH', text)
       this.loading = false
     },
     getLabel(item) {

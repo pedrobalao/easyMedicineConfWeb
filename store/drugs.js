@@ -239,8 +239,6 @@ export const actions = {
     // eslint-disable-next-line
     // console.log(diseases)
     const response = await this.$axios.get('/drugs/' + drugid)
-    // eslint-disable-next-line
-    console.log(response.data.drug)
     commit('SET_DRUG', response.data.drug)
   },
   SET_INDICATION({ commit }, indication) {

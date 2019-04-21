@@ -110,6 +110,7 @@
 <script>
 import { mapState } from 'vuex'
 import treatmentsList from '~/components/TreatmentsList.vue'
+import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: {
@@ -212,7 +213,8 @@ export default {
     async onSubmit() {
       let disease = this.disease
       disease.treatments = this.$store.state.diseases.treatmentsList
-      await this.$store.dispatch('diseases/SAVE', disease)
+      await cm(this, 'diseases/SAVE', disease, 'Doença gravada com sucesso', null)
+      // await this.$store.dispatch('diseases/SAVE', disease)
       this.$emit('onsubmitted')
     },
     onEditorBlur(editor) {},

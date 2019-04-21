@@ -54,9 +54,8 @@
 
 <script>
 import { mapState } from 'vuex'
-// import Autocomplete from 'v-autocomplete'
-// import 'v-autocomplete/dist/v-autocomplete.css'
 import unitytemplate from '~/components/UnityTemplate'
+import cm from '~/assets/js/call-manager.js'
 
 export default {
   event: 'onsubmitted',
@@ -125,8 +124,14 @@ export default {
   },
   methods: {
     async onSubmit() {
-    
-      await this.$store.dispatch('variables/SAVE', { variable: this.variable, editmode: this.editmode })
+      // await this.$store.dispatch('variables/SAVE', { variable: this.variable, editmode: this.editmode })
+      await cm(
+          this,
+          'variables/SAVE',
+          { variable: this.variable, editmode: this.editmode },
+          'Variável gravada com sucesso',
+          null
+        )
       this.$emit('onsubmitted')
     },
     addValue(){

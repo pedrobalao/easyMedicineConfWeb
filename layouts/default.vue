@@ -1,5 +1,6 @@
 <template>
   <div>
+    
     <navbar/>
     <div class="spa">
       <nuxt/>
@@ -30,13 +31,17 @@ html {
   box-sizing: border-box;
 }
 .btn {
-  margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 5px;
 }
 
 .spa {
   padding: 3%
+}
+
+.list-group {
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 *,

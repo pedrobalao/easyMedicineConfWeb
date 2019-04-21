@@ -121,6 +121,7 @@ import { mapState } from 'vuex'
 import drugIndicationViewer from '~/components/DrugIndicationViewer.vue'
 import drugCalculation from '~/components/DrugCalculation.vue'
 import Multiselect from 'vue-multiselect'
+import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: { drugIndicationViewer, Multiselect, drugCalculation },
@@ -218,14 +219,12 @@ export default {
       this.$store.dispatch('drugs/ADD_INDICATION_TO_DRUG', indication)
     },
     async onSubmit() {
-      this.$nuxt.$loading.start()
-      await this.$store.dispatch('drugs/SAVE', {
+      await cm(this, 'drugs/SAVE', {
         drug: this.$store.state.drugs.drug,
         categoryid: this.$store.state.drugs.categoryid,
         subcategoryid: this.$store.state.drugs.subcategoryid,
         editmode: this.editmode
-      })
-      this.$nuxt.$loading.finish()
+      }, 'Medicamento gravado com sucesso', null)
       this.$emit('onsubmitted')
     },
     showModal(action, calculation) {

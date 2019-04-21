@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import cm from '~/assets/js/call-manager.js'
+
 export default {
   event: 'onsubmitted',
   fetch({ store, params }) {
@@ -38,7 +40,15 @@ export default {
   methods: {
     async onSubmit() {
       try {
-        await this.$store.dispatch('unities/SAVE', this.$store.state.unities.unity)
+        // await this.$store.dispatch('unities/SAVE', this.$store.state.unities.unity)
+        await cm(
+          this,
+          'unities/SAVE',
+          this.$store.state.unities.unity,
+          'Unidade gravada com sucesso',
+          null
+        )
+
         this.$emit('onsubmitted')
       } catch (error) {
         // eslint-disable-next-line

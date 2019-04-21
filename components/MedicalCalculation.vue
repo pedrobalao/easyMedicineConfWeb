@@ -82,6 +82,7 @@
 <script>
 import { mapState } from 'vuex'
 import Multiselect from 'vue-multiselect'
+import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: { Multiselect },
@@ -164,10 +165,16 @@ export default {
   },
   methods: {
     async onSubmit() {
-      await this.$store.dispatch('medicalcalculations/SAVE', {
+
+      await cm(this, 'medicalcalculations/SAVE', {
         medicalcalculation: this.$store.state.medicalcalculations.medicalcalculation,
         editmode: this.editmode
-      })
+      }, 'Cálculo gravado com sucesso', null)
+
+      // await this.$store.dispatch('medicalcalculations/SAVE', {
+      //   medicalcalculation: this.$store.state.medicalcalculations.medicalcalculation,
+      //   editmode: this.editmode
+      // })
       this.$emit('onsubmitted')
     },
     addVariable() {

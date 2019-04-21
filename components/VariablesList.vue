@@ -29,8 +29,8 @@
 
 <script>
 import { mapState } from 'vuex'
-// import draggable from 'vuedraggable'
 import variable from '~/components/Variable.vue'
+//import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: {

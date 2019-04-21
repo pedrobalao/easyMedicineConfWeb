@@ -3,20 +3,21 @@
     <b-button variant="success" @click="showModal('NEW',null)">Novo Fármaco</b-button>
     <b-modal ref="myModalRef" size="lg" hide-footer :title="modalTitle">
       <div>
-        <treatment @onsubmitted='treatmentSubmitted'/>
+        <treatment @onsubmitted="treatmentSubmitted"/>
       </div>
     </b-modal>
 
     <b-list-group>
-      <b-list-group-item  v-for="(element, index) in treatments" :key="element.id"
-      class="d-flex justify-content-between align-items-center">{{element.description}}
-          <div><b-button
-          size="sm"
-          @click.stop="showModal('EDIT',index)"
-          variant="secondary"
-        >Editar</b-button>
-        <b-button size="sm" @click.stop="removeTreatment(index)" variant="danger">Apagar</b-button>
-          </div>
+      <b-list-group-item
+        v-for="(element, index) in treatments"
+        :key="element.id"
+        class="d-flex justify-content-between align-items-center"
+      >
+        {{element.description}}
+        <div>
+          <b-button size="sm" @click.stop="showModal('EDIT',index)" variant="secondary">Editar</b-button>
+          <b-button size="sm" @click.stop="removeTreatment(index)" variant="danger">Apagar</b-button>
+        </div>
       </b-list-group-item>
     </b-list-group>
 
@@ -37,6 +38,7 @@
 import { mapState } from 'vuex'
 // import draggable from 'vuedraggable'
 import treatment from '~/components/Treatment.vue'
+import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: {
@@ -70,16 +72,22 @@ export default {
       if (action === 'NEW') {
         this.modalTitle = 'Novo Fármaco'
         this.$store.dispatch('diseases/SET_TREATMENT_NULL')
-        await this.$store.dispatch('diseases/SET_DRUG_ID',null)
+        this.$store.dispatch('diseases/SET_DRUG_NULL')
+      } else {
+        this.modalTitle = 'Editar Fármaco'
+        // eslint-disable-next-line
+        console.log('Editar treatment index - ' + index)
+        this.$store.dispatch('diseases/SET_TREATMENT', index)
+        await cm(
+          this,
+          'diseases/SET_DRUG_ID',
+          this.$store.state.diseases.treatmentsList[index].drug_id,
+          null,
+          null
+        )
+        // await this.$store.dispatch('diseases/SET_DRUG_ID',this.$store.state.diseases.treatmentsList[index].drug_id)
       }
-      else {
-          this.modalTitle = 'Editar Fármaco'
-          // eslint-disable-next-line
-          console.log('Editar treatment index - '+index)
-          this.$store.dispatch('diseases/SET_TREATMENT',index)
-          await this.$store.dispatch('diseases/SET_DRUG_ID',this.$store.state.diseases.treatmentsList[index].drug_id)
-      }
-      
+
       this.$refs.myModalRef.show()
     },
     hideModal() {
@@ -88,8 +96,8 @@ export default {
     treatmentSubmitted() {
       this.hideModal()
     },
-    removeTreatment(index){
-        this.$store.dispatch('diseases/DELETE_TREATMENT',index)
+    removeTreatment(index) {
+      this.$store.dispatch('diseases/DELETE_TREATMENT', index)
     }
   }
 }

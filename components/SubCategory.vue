@@ -71,6 +71,7 @@ import { mapState } from 'vuex'
 import Autocomplete from 'v-autocomplete'
 import 'v-autocomplete/dist/v-autocomplete.css'
 import drugtemplate from '~/components/DrugTemplate'
+import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: {
@@ -116,10 +117,18 @@ export default {
   },
   methods: {
     async savesubcategory() {
-      await this.$store.dispatch(
+      await cm(
+        this,
         'categories/SAVE_SUBCATEGORY',
-        this.$store.state.categories.subcategory
+        this.$store.state.categories.subcategory,
+        'Sub-Categoria gravada com sucesso',
+        null
       )
+
+      // await this.$store.dispatch(
+      //   'categories/SAVE_SUBCATEGORY',
+      //   this.$store.state.categories.subcategory
+      // )
       if (!this.editmode) {
         this.$router.push({
           path:
@@ -132,7 +141,9 @@ export default {
     },
     async onSearch(text) {
       this.loading = true
-      await this.$store.dispatch('drugs/SEARCH', text)
+      await cm(this, 'drugs/SEARCH', text, null, null)
+
+      //await this.$store.dispatch('drugs/SEARCH', text)
       this.loading = false
     },
     getLabel(item) {
@@ -155,19 +166,43 @@ export default {
       }
     },
     async adddrug(drug) {
-      await this.$store.dispatch('categories/ADD_DRUG_TO_SUBCATEGORY', {
-        categoryid: this.$store.state.categories.subcategory.CategoryId,
-        subcategoryid: this.$store.state.categories.subcategory.Id,
-        drug: drug
-      })
+      await cm(
+        this,
+        'categories/ADD_DRUG_TO_SUBCATEGORY',
+        {
+          categoryid: this.$store.state.categories.subcategory.CategoryId,
+          subcategoryid: this.$store.state.categories.subcategory.Id,
+          drug: drug
+        },
+        'Medicamento adicionado com sucesso',
+        null
+      )
+      // await this.$store.dispatch('categories/ADD_DRUG_TO_SUBCATEGORY', {
+      //   categoryid: this.$store.state.categories.subcategory.CategoryId,
+      //   subcategoryid: this.$store.state.categories.subcategory.Id,
+      //   drug: drug
+      // })
     },
     async removedrug(drug, index) {
-      await this.$store.dispatch('categories/REMOVE_DRUG_FROM_SUBCATEGORY', {
-        categoryid: this.$store.state.categories.subcategory.CategoryId,
-        subcategoryid: this.$store.state.categories.subcategory.Id,
-        drug: drug,
-        index: index
-      })
+      await cm(
+        this,
+        'categories/REMOVE_DRUG_FROM_SUBCATEGORY',
+        {
+          categoryid: this.$store.state.categories.subcategory.CategoryId,
+          subcategoryid: this.$store.state.categories.subcategory.Id,
+          drug: drug,
+          index: index
+        },
+        'Medicamento removido com sucesso',
+        null
+      )
+
+      // await this.$store.dispatch('categories/REMOVE_DRUG_FROM_SUBCATEGORY', {
+      //   categoryid: this.$store.state.categories.subcategory.CategoryId,
+      //   subcategoryid: this.$store.state.categories.subcategory.Id,
+      //   drug: drug,
+      //   index: index
+      // })
     },
     editdrug(drug) {
       this.$router.push({
@@ -189,7 +224,7 @@ export default {
           this.$store.state.categories.subcategory.Id +
           '/drugs/create'
       })
-    },
+    }
   }
 }
 </script>

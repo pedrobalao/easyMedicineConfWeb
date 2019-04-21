@@ -21,7 +21,7 @@
 
 <script>
 import { mapState } from 'vuex'
-// import medicalcalculation from '~/components/MedicalCalculation.vue'
+//import cm from '~/assets/js/call-manager.js'
 
 export default {
   components: {
