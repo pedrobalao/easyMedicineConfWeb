@@ -20,7 +20,10 @@
           <b-nav-item to="/medicalcalculations">Cálculos Médicos</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav v-if="$auth.$state.user">
-          <b-nav-item to="/categories">Medicamentos</b-nav-item>
+          <b-nav-item to="/drugs">Medicamentos</b-nav-item>
+        </b-navbar-nav>
+        <b-navbar-nav v-if="$auth.$state.user">
+          <b-nav-item to="/categories">Categorias</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
