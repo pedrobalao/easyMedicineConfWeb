@@ -1,14 +1,16 @@
 <template>
   <div>
     <b-input-group class="mb-3" prepend="Medicamento">
-      <b-form-input v-model="searchText" @keydown.enter.native="search"></b-form-input>
+      <b-form-input v-model="searchText" @keydown.enter.native="search" />
       <b-input-group-append>
         <b-button
           text="Pesquisar"
           :disabled="searchText===''"
           variant="success"
           @click="search"
-        >Pesquisar</b-button>
+        >
+          Pesquisar
+        </b-button>
       </b-input-group-append>
     </b-input-group>
     <b-list-group>
@@ -17,8 +19,10 @@
         :key="element.Id"
         class="d-flex justify-content-between align-items-center"
       >
-        <div>{{element.Name}}</div>
-        <b-button size="sm" @click.stop="viewDrug(element.Id)" variant="secondary">Editar</b-button>
+        <div>{{ element.Name }}</div>
+        <b-button size="sm" variant="secondary" @click.stop="viewDrug(element.Id)">
+          Editar
+        </b-button>
       </b-list-group-item>
     </b-list-group>
   </div>
@@ -58,4 +62,3 @@ export default {
 </script>
 <style>
 </style>
-

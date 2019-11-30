@@ -1,30 +1,33 @@
 <template>
   <div>
-    <h1>{{description}}</h1>
+    <h1>{{ description }}</h1>
     <!-- Main table element -->
     <b-form>
       <b-form-group id="exampleInputGroup1" label="Título/Doença:" label-for="exampleInput1">
         <b-form-input
           id="exampleInput1"
-          type="text"
           v-model="description"
+          type="text"
           required
           placeholder="Título/Doença"
-        ></b-form-input>
+        />
+      </b-form-group>
+      <b-form-group id="exampleInputGroupS" label="Estado:" label-for="exampleInputs">
+        <b-form-select v-model="status" :options="options" />
       </b-form-group>
       <b-form-group id="exampleInputGroup2" label="Autor:" label-for="exampleInput2">
-        <b-form-input id="exampleInput2" type="text" v-model="author" required placeholder="Autor"></b-form-input>
+        <b-form-input id="exampleInput2" v-model="author" type="text" required placeholder="Autor" />
       </b-form-group>
       <b-form-group id="exampleInputGroup3" label="Indicação:" label-for="exampleInput3">
         <b-form-textarea
           id="exampleInput3"
-          type="text"
           v-model="indication"
+          type="text"
           required
           placeholder="Indicação"
           :rows="rows"
           :max-rows="maxrows"
-        ></b-form-textarea>
+        />
       </b-form-group>
 
       <b-form-group
@@ -34,14 +37,14 @@
       >
         <section class="container">
           <div
+            v-quill:myQuillEditor="editorOption"
             class="quill-editor"
             :content="treatment_description"
             @blur="onEditorBlur($event)"
             @focus="onEditorFocus($event)"
             @ready="onEditorReady($event)"
             @change="onEditorChange($event)"
-            v-quill:myQuillEditor="editorOption"
-          ></div>
+          />
         </section>
 
         <!--<b-form-textarea
@@ -58,51 +61,53 @@
       <b-form-group id="followupGroup" label="Followup:" label-for="followupInput">
         <b-form-textarea
           id="followupInput"
-          type="text"
           v-model="followup"
+          type="text"
           placeholder="Followup"
           :rows="rows"
           :max-rows="maxrows"
-        ></b-form-textarea>
+        />
       </b-form-group>
       <b-form-group id="exampleGroup" label="Exemplo:" label-for="exampleInput">
         <b-form-textarea
           id="exampleInput"
-          type="text"
           v-model="example"
+          type="text"
           placeholder="Exemplo"
           :rows="rows"
           :max-rows="maxrows"
-        ></b-form-textarea>
+        />
       </b-form-group>
 
       <b-form-group id="bibliographyGroup" label="Bibliografia:" label-for="bibliographyInput">
         <b-form-textarea
           id="bibliographyInput"
-          type="text"
           v-model="bibliography"
+          type="text"
           placeholder="Bibliografia"
           :rows="rows"
           :max-rows="maxrows"
-        ></b-form-textarea>
+        />
       </b-form-group>
       <b-form-group id="observationGroup" label="Observações:" label-for="observationInput">
         <b-form-textarea
           id="observationInput"
-          type="text"
           v-model="observation"
+          type="text"
           placeholder="Observações"
           :rows="rows"
           :max-rows="maxrows"
-        ></b-form-textarea>
+        />
       </b-form-group>
       <h2>Fármacos</h2>
 
       <no-ssr placeholder="Loading...">
         <!-- this component will only be rendered on client-side -->
-        <treatmentsList/>
+        <treatmentsList />
       </no-ssr>
-      <b-button @click="onSubmit" variant="primary">Gravar</b-button>
+      <b-button variant="primary" @click="onSubmit">
+        Gravar
+      </b-button>
     </b-form>
   </div>
 </template>
@@ -136,7 +141,11 @@ export default {
             ['blockquote', 'code-block']
           ]
         }
-      }
+      },
+      options: [
+        { value: 'draft', text: 'Draft' },
+        { value: 'active', text: 'Activa' }
+      ]
     }
   },
   computed: {
@@ -207,13 +216,29 @@ export default {
       set(value) {
         this.$store.commit('diseases/updateobservation', value)
       }
+    },
+    status: {
+      get() {
+        return this.$store.state.diseases.disease.status != null
+          ? this.$store.state.diseases.disease.status
+          : 'draft'
+      },
+      set(value) {
+        this.$store.commit('diseases/updatestatus', value)
+      }
     }
   },
   methods: {
     async onSubmit() {
-      let disease = this.disease
+      const disease = this.disease
       disease.treatments = this.$store.state.diseases.treatmentsList
-      await cm(this, 'diseases/SAVE', disease, 'Doença gravada com sucesso', null)
+      await cm(
+        this,
+        'diseases/SAVE',
+        disease,
+        'Doença gravada com sucesso',
+        null
+      )
       // await this.$store.dispatch('diseases/SAVE', disease)
       this.$emit('onsubmitted')
     },

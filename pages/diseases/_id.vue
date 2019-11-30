@@ -1,5 +1,5 @@
 <template>
-  <editDisease  @onsubmitted="close"/>
+  <editDisease @onsubmitted="close" />
 </template>
 <script>
 import editDisease from '~/components/EditDisease.vue'
@@ -15,15 +15,14 @@ export default {
     await store.dispatch('diseases/GET_DISEASE', params.id)
     await store.dispatch('vias/GET_VIAS')
     await store.dispatch('drugs/CLEAR_SEARCH_RESULT')
-    
+
     // eslint-disable-next-line
     console.log('after fetch ')
   },
   methods: {
-    close () {
-      this.$router.push({ path: `/diseases` }) 
+    close() {
+      this.$router.push({ path: `/diseases` })
     }
   }
 }
 </script>
-

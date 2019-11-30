@@ -14,7 +14,8 @@ export const state = () => ({
     bibliography: null,
     observation: null,
     followup: null,
-    treatment_description: null
+    treatment_description: null,
+    status: null
   },
   treatmentsList: [],
   treatment: {
@@ -120,6 +121,9 @@ export const mutations = {
   },
   updatedescription(state, value) {
     state.disease.description = value
+  },
+  updatestatus(state, value) {
+    state.disease.status = value
   },
   updateauthor(state, value) {
     state.disease.author = value
