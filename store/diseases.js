@@ -15,7 +15,11 @@ export const state = () => ({
     observation: null,
     followup: null,
     treatment_description: null,
-    status: null
+    status: null,
+    treatment: {
+      initial_evaluation: null,
+      conditions: []
+    }
   },
   treatmentsList: [],
   treatment: {
@@ -68,7 +72,11 @@ export const mutations = {
       bibliography: null,
       observation: null,
       followup: null,
-      treatment_description: null
+      treatment_description: null,
+      treatment: {
+        initial_evaluation: null,
+        conditions: []
+      }
     }
   },
   SET_TREATMENT_NULL(state) {
@@ -87,8 +95,6 @@ export const mutations = {
     state.drug = null
   },
   SET_DISEASE(state, disease) {
-    // eslint-disable-next-line
-    // console.log(disease)
     state.disease = disease
   },
   UPDATE_DISEASE(state, disease) {
@@ -146,7 +152,9 @@ export const mutations = {
   updateobservation(state, value) {
     state.disease.observation = value
   },
-
+  updateinitialevaluation(state, value) {
+    state.disease.treatment.initial_evaluation = value
+  },
   updatetreatmenttreatmenttype(state, value) {
     state.treatment.treatmenttype = value
   },
@@ -167,6 +175,29 @@ export const mutations = {
   },
   updatetreatmentobservation(state, value) {
     state.treatment.observation = value
+  },
+  addemptycondition(state) {
+    state.disease.treatment.conditions.push({
+      id: new Date().getTime(),
+      condition: null,
+      firstline: null,
+      secondline: null,
+      thirdline: null
+    })
+  },
+  deletecondition(state, value) {
+    state.disease.treatment.conditions.splice(
+      state.disease.treatment.conditions.findIndex(function(i) {
+        return i.id === value.id
+      }),
+      1
+    )
+  },
+  updatecondition(state, value) {
+    const index = state.disease.treatment.conditions.findIndex(function(i) {
+      return i.id === value.id
+    })
+    state.disease.treatment.conditions[index] = value
   },
 
   SET_DRUG(state, drug) {
@@ -195,7 +226,12 @@ export const actions = {
     const responsetreatments = await this.$axios.get(
       '/diseases/' + id + '/treatments'
     )
-    commit('SET_DISEASE', response.data.disease)
+
+    const disease = response.data.disease
+    disease.treatment = JSON.parse(disease.treatment)
+
+    // console.log('disease: ' + JSON.stringify(disease))
+    commit('SET_DISEASE', disease)
     commit('SET_TREATMENTS', responsetreatments.data.treatments)
   },
   async SET_PAGE({ commit }, newPage) {

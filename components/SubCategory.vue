@@ -1,23 +1,25 @@
 <template>
   <div>
-    <h1>{{description}}</h1>
+    <h1>{{ description }}</h1>
 
     <b-form>
       <b-input-group prepend="Nome" class="mt-3">
         <b-form-input
           id="exampleInput1"
-          type="text"
           v-model="description"
+          type="text"
           required
           placeholder="Descrição"
-        ></b-form-input>
+        />
         <b-input-group-append>
           <b-button
             class="nomgr"
             variant="success"
             :disabled="description===''"
             @click="savesubcategory()"
-          >{{editmode ? "Renomear":"Criar"}}</b-button>
+          >
+            {{ editmode ? "Renomear":"Criar" }}
+          </b-button>
         </b-input-group-append>
       </b-input-group>
     </b-form>
@@ -27,25 +29,29 @@
 
       <div class="input-group mb-3">
         <v-autocomplete
-          :items="searchResult"
           v-model="drug"
+          :items="searchResult"
           :get-label="getLabel"
           :component-item="template"
+          :input-attrs="{class: 'form-control'}"
           @update-items="onSearch"
           @input="drugChanged"
-          :input-attrs="{class: 'form-control'}"
-        ></v-autocomplete>
+        />
         <b-button
           :disabled="drug==null"
+          variant="secondary"
+          class="btn btn-secondary nomgr"
           @click.stop="adddrug(drug)"
-          variant="secondary"
-          class="btn btn-secondary nomgr"
-        >Adicionar</b-button>
+        >
+          Adicionar
+        </b-button>
         <b-button
-          @click.stop="newdrug(drug)"
           variant="secondary"
           class="btn btn-secondary nomgr"
-        >Criar Medicamento</b-button>
+          @click.stop="newdrug(drug)"
+        >
+          Criar Medicamento
+        </b-button>
       </div>
 
       <b-list-group>
@@ -54,11 +60,15 @@
           :key="element.Id"
           class="d-flex justify-content-between align-items-center"
         >
-          <div>{{element.Name}}</div>
+          <div>{{ element.Name }}</div>
 
           <div>
-            <b-button size="sm" @click.stop="editdrug(element)" variant="secondary">Editar</b-button>
-            <b-button size="sm" @click.stop="removedrug(element, index)" variant="danger">Apagar</b-button>
+            <b-button size="sm" variant="secondary" @click.stop="editdrug(element)">
+              Editar
+            </b-button>
+            <b-button size="sm" variant="danger" @click.stop="removedrug(element, index)">
+              Apagar
+            </b-button>
           </div>
         </b-list-group-item>
       </b-list-group>
@@ -143,7 +153,7 @@ export default {
       this.loading = true
       await cm(this, 'drugs/SEARCH', text, null, null)
 
-      //await this.$store.dispatch('drugs/SEARCH', text)
+      // await this.$store.dispatch('drugs/SEARCH', text)
       this.loading = false
     },
     getLabel(item) {
@@ -274,5 +284,3 @@ export default {
   border-right: 1px solid #ced4da;
 }
 </style>
-
-

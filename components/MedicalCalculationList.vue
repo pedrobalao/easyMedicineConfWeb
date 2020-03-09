@@ -1,9 +1,11 @@
 <template>
   <div>
-    <b-button variant="success" @click="showModal('NEW',null)">Novo Cálculo Médico</b-button>
+    <b-button variant="success" @click="showModal('NEW',null)">
+      Novo Cálculo Médico
+    </b-button>
     <b-modal ref="myModalRef" size="lg" hide-footer :title="modalTitle">
       <div>
-        <medicalcalculation @onsubmitted="variableSubmitted" :editmode="editmode"/>
+        <medicalcalculation :editmode="editmode" @onsubmitted="variableSubmitted" />
       </div>
     </b-modal>
 
@@ -14,12 +16,16 @@
         class="d-flex justify-content-between align-items-center"
       >
         <div>
-          {{element.Description}}
+          {{ element.Description }}
         </div>
 
         <div>
-          <b-button size="sm" @click.stop="showModal('EDIT', element)" variant="secondary">Editar</b-button>
-          <b-button size="sm" @click.stop="removeTreatment(index)" variant="danger">Apagar</b-button>
+          <b-button size="sm" variant="secondary" @click.stop="showModal('EDIT', element)">
+            Editar
+          </b-button>
+          <b-button size="sm" variant="danger" @click.stop="removeTreatment(index)">
+            Apagar
+          </b-button>
         </div>
       </b-list-group-item>
     </b-list-group>
@@ -59,7 +65,10 @@ export default {
         this.editmode = true
         // eslint-disable-next-line
         console.log('Element - ' + element)
-        this.$store.dispatch('medicalcalculations/SET_MEDICALCALCULATION', element)
+        this.$store.dispatch(
+          'medicalcalculations/SET_MEDICALCALCULATION',
+          element
+        )
       }
 
       this.$refs.myModalRef.show()

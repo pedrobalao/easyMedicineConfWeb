@@ -30,6 +30,22 @@
         />
       </b-form-group>
 
+
+      <h2>{{ "Tratamento" }}</h2>
+      <b-form-group id="exampleInputGroup3" label="Avaliação Inicial:" label-for="exampleInput3">
+        <b-form-textarea
+          id="exampleInput3"
+          v-model="initial_evaluation"
+          type="text"
+          required
+          placeholder="Avaliação Inicial"
+          :rows="rows"
+          :max-rows="maxrows"
+        />
+      </b-form-group>
+      <diseaseTreatmentList />
+      
+      <!--
       <b-form-group
         id="InputDescrTreatGroup"
         label="Descrição do Tratamento:"
@@ -47,16 +63,8 @@
           />
         </section>
 
-        <!--<b-form-textarea
-          id="InputDescrTreat"
-          type="text"
-          v-model="treatment_description"
-          required
-          placeholder="Descrição do tratamento"
-          :rows="rows"
-          :max-rows="maxrows"
-        ></b-form-textarea>-->
       </b-form-group>
+      -->
 
       <b-form-group id="followupGroup" label="Followup:" label-for="followupInput">
         <b-form-textarea
@@ -116,10 +124,12 @@
 import { mapState } from 'vuex'
 import treatmentsList from '~/components/TreatmentsList.vue'
 import cm from '~/assets/js/call-manager.js'
+import diseaseTreatmentList from '~/components/DiseaseTreatmentList.vue'
 
 export default {
   components: {
-    treatmentsList
+    treatmentsList,
+    diseaseTreatmentList
   },
   event: 'onsubmitted',
   async fetch({ store, params }) {
@@ -225,6 +235,14 @@ export default {
       },
       set(value) {
         this.$store.commit('diseases/updatestatus', value)
+      }
+    },
+    initial_evaluation: {
+      get() {
+        return this.$store.state.diseases.disease.initial_evaluation
+      },
+      set(value) {
+        this.$store.commit('diseases/updateinitialevaluation', value)
       }
     }
   },

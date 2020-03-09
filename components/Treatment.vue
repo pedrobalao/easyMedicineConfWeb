@@ -13,37 +13,48 @@
 
       <b-form-group id="drugsGroup1" label="Medicamento" label-for="medicamentoInput">
         <v-autocomplete
-          :items="searchResult"
           v-model="drug"
+          :items="searchResult"
           :get-label="getLabel"
           :component-item="template"
           @update-items="onSearch"
           @input="drugChanged"
-        ></v-autocomplete>
+        />
       </b-form-group>
 
       <b-form-group id="viasGroup1" label="Via" label-for="tviasinput">
-        <b-form-select v-model="via_id" class="mb-3" id="tviasinput">
-          <option v-for="via in vias" :key="via.Id" :value="via.Id">{{via.Id}}</option>
+        <b-form-select id="tviasinput" v-model="via_id" class="mb-3">
+          <option v-for="via in vias" :key="via.Id" :value="via.Id">
+            {{ via.Id }}
+          </option>
         </b-form-select>
       </b-form-group>
 
       <b-form-group id="descrg" label="Descrição" label-for="descr">
-        <b-form-input id="descr" type="text" v-model="description" required placeholder="Descrição" readonly></b-form-input>
+        <b-form-input
+          id="descr"
+          v-model="description"
+          type="text"
+          required
+          placeholder="Descrição"
+          readonly
+        />
       </b-form-group>
 
       <b-form-group id="posologiag" label="Posologia" label-for="posologia">
-        <b-form-input id="posologia" type="text" v-model="use" required placeholder="Posologia"></b-form-input>
+        <b-form-input id="posologia" v-model="use" type="text" required placeholder="Posologia" />
       </b-form-group>
 
       <b-form-group id="duracaog" label="Duração" label-for="duracao">
-        <b-form-input id="duracao" type="text" v-model="duration" required placeholder="Duração"></b-form-input>
+        <b-form-input id="duracao" v-model="duration" type="text" required placeholder="Duração" />
       </b-form-group>
 
       <b-form-group id="observacoesg" label="Observações" label-for="observacoes">
-        <b-form-input id="observacoes" type="text" v-model="observation" placeholder="Observações"></b-form-input>
+        <b-form-input id="observacoes" v-model="observation" type="text" placeholder="Observações" />
       </b-form-group>
-      <b-button @click="onSubmit" variant="primary">Gravar</b-button>
+      <b-button variant="primary" @click="onSubmit">
+        Gravar
+      </b-button>
     </b-form>
   </div>
 </template>
@@ -81,11 +92,9 @@ export default {
         // eslint-disable-next-line
         console.log('drugid - ' + value)
         this.$store.commit('diseases/SET_DRUG', value)
-        if(value != null){
+        if (value != null) {
           this.description = value.Name
-        }
-        else
-        {
+        } else {
           this.description = 'Selecione um medicamento válido'
         }
       }
@@ -139,39 +148,29 @@ export default {
     },
     async onSearch(text) {
       this.loading = true
-      await cm(
-        this,
-        'drugs/SEARCH',
-        text,
-        null,
-        null
-      )
+      await cm(this, 'drugs/SEARCH', text, null, null)
       // await this.$store.dispatch('drugs/SEARCH', text)
       this.loading = false
     },
     getLabel(item) {
-      if(item != null)
-        return item.Name
-      else
-        return '';
+      if (item != null) return item.Name
+      else return ''
     },
-    drugChanged (item) {
+    drugChanged(item) {
       // eslint-disable-next-line
       console.log('Item changed')
-      
-      if(item != null) {
+
+      if (item != null) {
         // eslint-disable-next-line
         console.log('Item changed drugid - ' + item.Id)
         this.$store.commit('diseases/updatetreatmentdrug_id', item.Id)
-      }
-      else {
+      } else {
         // this.drug_id = null
         // eslint-disable-next-line
         console.log('Item changed drugid - null')
         this.$store.commit('diseases/updatetreatmentdrug_id', null)
       }
     }
-
   }
 }
 </script>
@@ -211,4 +210,3 @@ export default {
   border-right: 1px solid #ced4da;
 }
 </style>
-
