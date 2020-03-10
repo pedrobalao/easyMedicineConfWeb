@@ -228,7 +228,14 @@ export const actions = {
     )
 
     const disease = response.data.disease
-    disease.treatment = JSON.parse(disease.treatment)
+    if (disease.treatment == null || disease.treatment === undefined) {
+      disease.treatment = {
+        initial_evaluation: null,
+        conditions: []
+      }
+    } else {
+      disease.treatment = JSON.parse(disease.treatment)
+    }
 
     // console.log('disease: ' + JSON.stringify(disease))
     commit('SET_DISEASE', disease)
