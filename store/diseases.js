@@ -16,8 +16,8 @@ export const state = () => ({
     followup: null,
     treatment_description: null,
     status: null,
+    general_measures: null,
     treatment: {
-      initial_evaluation: null,
       conditions: []
     }
   },
@@ -73,8 +73,8 @@ export const mutations = {
       observation: null,
       followup: null,
       treatment_description: null,
+      general_measures: null,
       treatment: {
-        initial_evaluation: null,
         conditions: []
       }
     }
@@ -142,6 +142,9 @@ export const mutations = {
   },
   updatefollowup(state, value) {
     state.disease.followup = value
+  },
+  updategeneral_measures(state, value) {
+    state.disease.general_measures = value
   },
   updateexample(state, value) {
     state.disease.example = value

@@ -32,13 +32,13 @@
 
 
       <h2>{{ "Tratamento" }}</h2>
-      <b-form-group id="exampleInputGroup3" label="Avaliação Inicial:" label-for="exampleInput3">
+      <b-form-group id="exampleInputGroup3" label="Medidas Gerais:" label-for="exampleInput3">
         <b-form-textarea
           id="exampleInput3"
-          v-model="initial_evaluation"
+          v-model="general_measures"
           type="text"
           required
-          placeholder="Avaliação Inicial"
+          placeholder="Medidas Gerais"
           :rows="rows"
           :max-rows="maxrows"
         />
@@ -217,6 +217,15 @@ export default {
       },
       set(value) {
         this.$store.commit('diseases/updatebibliography', value)
+      }
+    },
+
+    general_measures: {
+      get() {
+        return this.$store.state.diseases.disease.general_measures
+      },
+      set(value) {
+        this.$store.commit('diseases/updategeneral_measures', value)
       }
     },
     observation: {
